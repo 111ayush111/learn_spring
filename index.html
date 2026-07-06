@@ -1,0 +1,2868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot + REST API - Complete Masterclass</title>
+    <style>
+        :root {
+            --primary: #6DB33F;
+            --primary-dark: #5A9E32;
+            --secondary: #1B1F23;
+            --accent: #F0F0F0;
+            --code-bg: #1E1E1E;
+            --text: #333;
+            --light-gray: #f5f5f5;
+            --border: #ddd;
+            --note-bg: #E3F2FD;
+            --note-border: #2196F3;
+            --warn-bg: #FFF3E0;
+            --warn-border: #FF9800;
+            --tip-bg: #E8F5E9;
+            --tip-border: #4CAF50;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: #fafafa;
+        }
+        
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--secondary);
+            color: white;
+            overflow-y: auto;
+            z-index: 1000;
+            padding: 20px 0;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .sidebar-header h1 {
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+        
+        .sidebar-header p {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        .nav-section {
+            margin-bottom: 10px;
+        }
+        
+        .nav-section-title {
+            padding: 10px 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 8px 20px 8px 35px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-link:hover {
+            background: rgba(109, 179, 63, 0.1);
+            color: white;
+            border-left-color: var(--primary);
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 300px;
+            min-height: 100vh;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--secondary) 0%, #2d333b 100%);
+            color: white;
+            padding: 60px 50px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .hero h1 span { color: var(--primary); }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: #aaa;
+        }
+        
+        .section {
+            padding: 40px 50px;
+            max-width: 1000px;
+        }
+        
+        .section:nth-child(even) { background: white; }
+        
+        h2 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            color: #444;
+            margin: 30px 0 15px;
+        }
+        
+        h4 {
+            font-size: 1.1rem;
+            color: #555;
+            margin: 20px 0 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+        
+        code:not(pre code) {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #d63384;
+            font-size: 0.9em;
+        }
+        
+        /* Syntax Highlighting */
+        .keyword { color: #569CD6; }
+        .string { color: #CE9178; }
+        .comment { color: #6A9955; font-style: italic; }
+        .annotation { color: #4EC9B0; font-weight: bold; }
+        .type { color: #4EC9B0; }
+        .function { color: #DCDCAA; }
+        .number { color: #B5CEA8; }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: var(--secondary);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        tr:hover { background: var(--light-gray); }
+        
+        /* Callout Boxes */
+        .note, .warning, .tip, .remember {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid;
+        }
+        
+        .note {
+            background: var(--note-bg);
+            border-color: var(--note-border);
+        }
+        
+        .warning {
+            background: var(--warn-bg);
+            border-color: var(--warn-border);
+        }
+        
+        .tip {
+            background: var(--tip-bg);
+            border-color: var(--tip-border);
+        }
+        
+        .remember {
+            background: #F3E5F5;
+            border-color: #9C27B0;
+        }
+        
+        .note-title, .warning-title, .tip-title, .remember-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .note-title { color: var(--note-border); }
+        .warning-title { color: var(--warn-border); }
+        .tip-title { color: var(--tip-border); }
+        .remember-title { color: #9C27B0; }
+        
+        /* Steps */
+        .step {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .step h4 {
+            display: inline;
+            color: var(--secondary);
+        }
+        
+        /* Annotation Card */
+        .annotation-card {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .annotation-card h4 {
+            color: var(--primary);
+            margin-top: 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+        
+        /* File Label */
+        .file-label {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px 5px 0 0;
+            font-size: 0.85rem;
+            font-family: monospace;
+            margin-bottom: -5px;
+        }
+        
+        /* Project Structure Tree */
+        .tree {
+            background: var(--code-bg);
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            line-height: 1.8;
+        }
+        
+        .tree .folder { color: #4EC9B0; }
+        .tree .file { color: #CE9178; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; position: relative; height: auto; }
+            .main-content { margin-left: 0; }
+            .hero { padding: 30px 20px; }
+            .section { padding: 20px; }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        
+        /* Top Button */
+        .top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: none;
+            z-index: 999;
+            transition: all 0.3s;
+        }
+        
+        .top-btn:hover { background: var(--primary-dark); transform: translateY(-3px); }
+        
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>Spring Boot Masterclass</h1>
+            <p>Complete Guide in Hinglish</p>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">Shuruwat</div>
+            <a href="#intro" class="nav-link">Introduction</a>
+            <a href="#prereq" class="nav-link">Prerequisites</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">Java Revision</div>
+            <a href="#java-classes" class="nav-link">Classes & Objects</a>
+            <a href="#java-inheritance" class="nav-link">Inheritance & Interfaces</a>
+            <a href="#java-collections" class="nav-link">Collections (List, Map)</a>
+            <a href="#java-exceptions" class="nav-link">Exception Handling</a>
+            <a href="#java-annotations" class="nav-link">Java Annotations (@)</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">Maven Basics</div>
+            <a href="#maven" class="nav-link">Maven Kya Hai?</a>
+            <a href="#pom-xml" class="nav-link">pom.xml Samajhna</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">Spring Boot Core</div>
+            <a href="#spring-intro" class="nav-link">Spring Boot Kya Hai?</a>
+            <a href="#spring-setup" class="nav-link">Project Setup</a>
+            <a href="#project-structure" class="nav-link">Project Structure</a>
+            <a href="#annotations" class="nav-link">Annotations Deep Dive</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">REST API</div>
+            <a href="#rest-intro" class="nav-link">REST API Kya Hai?</a>
+            <a href="#http-methods" class="nav-link">HTTP Methods</a>
+            <a href="#http-status" class="nav-link">HTTP Status Codes</a>
+            <a href="#json" class="nav-link">JSON Format</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">Architecture</div>
+            <a href="#layered" class="nav-link">Layered Architecture</a>
+            <a href="#controller" class="nav-link">Controller Layer</a>
+            <a href="#service" class="nav-link">Service Layer</a>
+            <a href="#repository" class="nav-link">Repository Layer</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">Database & JPA</div>
+            <a href="#jpa-intro" class="nav-link">JPA & Hibernate</a>
+            <a href="#entities" class="nav-link">Entities</a>
+            <a href="#crud" class="nav-link">CRUD Operations</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">Complete Project</div>
+            <a href="#project-overview" class="nav-link">Project Overview</a>
+            <a href="#project-step1" class="nav-link">Step 1: Setup</a>
+            <a href="#project-step2" class="nav-link">Step 2: Model</a>
+            <a href="#project-step3" class="nav-link">Step 3: Repository</a>
+            <a href="#project-step4" class="nav-link">Step 4: Service</a>
+            <a href="#project-step5" class="nav-link">Step 5: Controller</a>
+            <a href="#project-step6" class="nav-link">Step 6: Run & Test</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">Additional</div>
+            <a href="#devtools" class="nav-link">Spring Boot DevTools</a>
+            <a href="#postman" class="nav-link">Postman se Testing</a>
+            <a href="#common-errors" class="nav-link">Common Errors</a>
+            <a href="#cheatsheet" class="nav-link">Annotation Cheat Sheet</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Spring Boot + <span>REST API</span></h1>
+            <p>Complete Masterclass from Scratch - Hinglish Mein</p>
+        </div>
+
+        <!-- Introduction -->
+        <section class="section" id="intro">
+            <h2>Welcome Bhai! 🚀</h2>
+            <p>
+                Is tutorial mein hum <strong>Spring Boot</strong> aur <strong>REST API</strong> ko bilkul scratch se seekhenge. 
+                Tujhe koi bhi cheez pehle se nahi aani chahiye - bas thodi si Java aani chahiye. 
+                Hum sab kuch step by step, detail mein cover karenge.
+            </p>
+            
+            <div class="note">
+                <div class="note-title">📌 Note</div>
+                Ye tutorial tera GitHub repository (<code>https://github.com/111ayush111/Spring_boot</code>) ko reference lekar banaya gaya hai. 
+                Tere repo mein ek basic Spring Boot project hai jisme sirf <code>@SpringBootApplication</code> annotation hai. 
+                Is tutorial mein usse extend karke ek <strong>complete working project</strong> banayenge!
+            </div>
+
+            <h3>Is Tutorial Mein Kya Milega?</h3>
+            <ul>
+                <li>✅ Java Prerequisites revision (Classes, Inheritance, Collections, Exceptions)</li>
+                <li>✅ Maven/Gradle basics</li>
+                <li>✅ Spring Boot project setup</li>
+                <li>✅ <strong>All important annotations</strong> with detailed explanation + code</li>
+                <li>✅ REST API concepts (HTTP methods, status codes, JSON)</li>
+                <li>✅ Layered Architecture (Controller → Service → Repository)</li>
+                <li>✅ JPA & Database operations</li>
+                <li>✅ Complete working project - <strong>Student Management System</strong></li>
+                <li>✅ Postman se API testing</li>
+                <li>✅ Common errors aur unka solution</li>
+            </ul>
+        </section>
+
+        <!-- Prerequisites -->
+        <section class="section" id="prereq">
+            <h2>Pehle Kya Aana Chahiye? 📝</h2>
+            <p>
+                Bhai, Spring Boot seekhne se pehle kuch Java concepts clear hone chahiye. 
+                Agar tu inme se kuch bhool gaya hai toh tension mat le - neeche sab revise karwa dunga!
+            </p>
+
+            <table>
+                <tr>
+                    <th>Topic</th>
+                    <th>Kyun Zaroori Hai?</th>
+                </tr>
+                <tr>
+                    <td>Java Classes & Objects</td>
+                    <td>Spring Boot mein har cheez class hoti hai</td>
+                </tr>
+                <tr>
+                    <td>Inheritance & Interfaces</td>
+                    <td><code>@Extend</code> karna, interfaces samajhna</td>
+                </tr>
+                <tr>
+                    <td>Annotations (@)</td>
+                    <td>Spring Boot <strong>annotations pe based hai</strong></td>
+                </tr>
+                <tr>
+                    <td>Collections (List, Map)</td>
+                    <td>Data handle karne ke liye</td>
+                </tr>
+                <tr>
+                    <td>Exception Handling</td>
+                    <td>Errors gracefully handle karne ke liye</td>
+                </tr>
+                <tr>
+                    <td>Maven ya Gradle basics</td>
+                    <td>Dependencies manage karne ke liye</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Java Classes & Objects -->
+        <section class="section" id="java-classes">
+            <h2>1. Java Classes & Objects 🎯</h2>
+            <p>
+                Bhai, sabse pehle yaad kar - <strong>Class</strong> ek blueprint hai jaise ghar ka naksha, 
+                aur <strong>Object</strong> us naksha se bana actual ghar hai.
+            </p>
+
+            <div class="file-label">Student.java</div>
+            <pre><code><span class="comment">// Class = Blueprint (Naksha)</span>
+<span class="keyword">public class</span> <span class="type">Student</span> {
+    
+    <span class="comment">// Properties (Variables) - Data store karne ke liye</span>
+    <span class="keyword">private</span> <span class="type">Long</span> id;
+    <span class="keyword">private</span> <span class="type">String</span> name;
+    <span class="keyword">private</span> <span class="type">int</span> age;
+    
+    <span class="comment">// Constructor - Object banate waqt values set karne ke liye</span>
+    <span class="keyword">public</span> <span class="function">Student</span>() {}  <span class="comment">// Default constructor (khali)</span>
+    
+    <span class="keyword">public</span> <span class="function">Student</span>(<span class="type">Long</span> id, <span class="type">String</span> name, <span class="type">int</span> age) {
+        <span class="keyword">this</span>.id = id;
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.age = age;
+    }
+    
+    <span class="comment">// Getters & Setters - Data access karne ke liye</span>
+    <span class="keyword">public</span> <span class="type">Long</span> <span class="function">getId</span>() { <span class="keyword">return</span> id; }
+    <span class="keyword">public void</span> <span class="function">setId</span>(<span class="type">Long</span> id) { <span class="keyword">this</span>.id = id; }
+    
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">getName</span>() { <span class="keyword">return</span> name; }
+    <span class="keyword">public void</span> <span class="function">setName</span>(<span class="type">String</span> name) { <span class="keyword">this</span>.name = name; }
+    
+    <span class="keyword">public int</span> <span class="function">getAge</span>() { <span class="keyword">return</span> age; }
+    <span class="keyword">public void</span> <span class="function">setAge</span>(<span class="type">int</span> age) { <span class="keyword">this</span>.age = age; }
+}</code></pre>
+
+            <div class="file-label">Main.java</div>
+            <pre><code><span class="comment">// Object = Actual Ghar (Blueprint se bana)</span>
+<span class="type">Student</span> student1 = <span class="keyword">new</span> <span class="type">Student</span>(<span class="number">1L</span>, <span class="string">"Rahul"</span>, <span class="number">20</span>);  <span class="comment">// Object banaya!</span>
+<span class="type">Student</span> student2 = <span class="keyword">new</span> <span class="type">Student</span>(<span class="number">2L</span>, <span class="string">"Priya"</span>, <span class="number">22</span>);  <span class="comment">// Dusra object!</span>
+
+System.out.<span class="function">println</span>(student1.<span class="function">getName</span>());  <span class="comment">// Output: Rahul</span>
+System.out.<span class="function">println</span>(student2.<span class="function">getName</span>());  <span class="comment">// Output: Priya</span></code></pre>
+
+            <div class="tip">
+                <div class="tip-title">💡 Yaad Rakh</div>
+                <ul>
+                    <li><strong>Class</strong> = Blueprint (naksha) - sirf definition hoti hai</li>
+                    <li><strong>Object</strong> = Real thing (actual ghar) - memory mein exist karta hai</li>
+                    <li><code>new</code> keyword se object banate hain</li>
+                    <li><code>private</code> variables sirf class ke andar access hote hain</li>
+                    <li><code>public</code> getters/setters se bahar se data access karte hain</li>
+                </ul>
+            </div>
+
+            <h3>Spring Boot Mein Kahan Use Hota Hai?</h3>
+            <p>
+                Spring Boot mein har cheez class hoti hai: <code>Controller</code> class, <code>Service</code> class, 
+                <code>Repository</code> class, <code>Entity</code> class - sab classes hain! Toh class/object concept 
+                clear hona must hai.
+            </p>
+        </section>
+
+        <!-- Inheritance & Interfaces -->
+        <section class="section" id="java-inheritance">
+            <h2>2. Inheritance & Interfaces 🔗</h2>
+            
+            <h3>Inheritance (Baap-Beta Concept)</h3>
+            <p>
+                Inheritance matlab - baap ki property beta inherit kar lega. Java mein <code>extends</code> keyword use karte hain.
+            </p>
+
+            <div class="file-label">Animal.java (Parent Class)</div>
+            <pre><code><span class="keyword">public class</span> <span class="type">Animal</span> {
+    <span class="keyword">protected</span> <span class="type">String</span> name;  <span class="comment">// protected = baap aur dono ke liye</span>
+    
+    <span class="keyword">public void</span> <span class="function">eat</span>() {
+        System.out.<span class="function">println</span>(name + <span class="string">" kha raha hai"</span>);
+    }
+}</code></pre>
+
+            <div class="file-label">Dog.java (Child Class)</div>
+            <pre><code><span class="comment">// Dog extends Animal = Dog ne Animal ki properties le li</span>
+<span class="keyword">public class</span> <span class="type">Dog</span> <span class="keyword">extends</span> <span class="type">Animal</span> {
+    
+    <span class="keyword">public void</span> <span class="function">bark</span>() {
+        System.out.<span class="function">println</span>(name + <span class="string">" bhaunk raha hai!"</span>);
+    }
+}</code></pre>
+
+            <div class="file-label">Main.java</div>
+            <pre><code><span class="type">Dog</span> dog = <span class="keyword">new</span> <span class="type">Dog</span>();
+dog.name = <span class="string">"Tommy"</span>;
+dog.<span class="function">eat</span>();    <span class="comment">// Animal se mila - Output: Tommy kha raha hai</span>
+dog.<span class="function">bark</span>();   <span class="comment">// Dog ka apna - Output: Tommy bhaunk raha hai!</span></code></pre>
+
+            <h3>Interface (Contract/Agreement)</h3>
+            <p>
+                Interface ek contract hai - jo class interface implement karegi, usko saare methods define karne padenge. 
+                Java mein <code>implements</code> keyword use karte hain.
+            </p>
+
+            <div class="file-label">AnimalActions.java (Interface)</div>
+            <pre><code><span class="keyword">public interface</span> <span class="type">AnimalActions</span> {
+    <span class="type">void</span> <span class="function">makeSound</span>();   <span class="comment">// Sirf declaration, NO body!</span>
+    <span class="type">void</span> <span class="function">move</span>();      <span class="comment">// Sirf declaration, NO body!</span>
+}</code></pre>
+
+            <div class="file-label">Cat.java (Implements Interface)</div>
+            <pre><code><span class="keyword">public class</span> <span class="type">Cat</span> <span class="keyword">implements</span> <span class="type">AnimalActions</span> {
+    
+    <span class="annotation">@Override</span>
+    <span class="keyword">public void</span> <span class="function">makeSound</span>() {
+        System.out.<span class="function">println</span>(<span class="string">"Meow Meow!"</span>);
+    }
+    
+    <span class="annotation">@Override</span>
+    <span class="keyword">public void</span> <span class="function">move</span>() {
+        System.out.<span class="function">println</span>(<span class="string">"Cat chal rahi hai"</span>);
+    }
+}</code></pre>
+
+            <div class="remember">
+                <div class="remember-title">🧠 Spring Boot Mein Interface Ka Kya Kaam?</div>
+                <p>
+                    Spring Boot mein <code>JpaRepository</code> ek interface hai! Jab tu <code>extends JpaRepository</code> karta hai, 
+                    toh automatically CRUD methods mil jaate hain - tuje khud likhne ki zaroorat nahi! 
+                    Yehi Spring Boot ka magic hai - <strong>Interface inheritance</strong> se kaam asaan ho jata hai.
+                </p>
+            </div>
+        </section>
+
+        <!-- Collections -->
+        <section class="section" id="java-collections">
+            <h2>3. Collections (List, Map) 📚</h2>
+            <p>
+                Collections data store karne ke tarike hain. Spring Boot mein data ko handle karne ke liye 
+                collections ka bahut use hota hai (jaise student list, product list, etc.)
+            </p>
+
+            <h3>List (Ordered Collection - Duplicate allowed)</h3>
+            <div class="file-label">ListExample.java</div>
+            <pre><code><span class="keyword">import</span> java.util.ArrayList;
+<span class="keyword">import</span> java.util.List;
+
+<span class="comment">// List = Ordered items (jaise line mein khade students)</span>
+<span class="type">List</span>&lt;<span class="type">String</span>&gt; names = <span class="keyword">new</span> <span class="type">ArrayList</span>&lt;&gt;();
+
+<span class="comment">// Items add karna</span>
+names.<span class="function">add</span>(<span class="string">"Rahul"</span>);
+names.<span class="function">add</span>(<span class="string">"Priya"</span>);
+names.<span class="function">add</span>(<span class="string">"Amit"</span>);
+
+<span class="comment">// Access karna (index se - 0 se start hota hai)</span>
+System.out.<span class="function">println</span>(names.<span class="function">get</span>(<span class="number">0</span>));  <span class="comment">// Rahul</span>
+
+<span class="comment">// Loop karke sab print karna</span>
+<span class="keyword">for</span> (<span class="type">String</span> name : names) {
+    System.out.<span class="function">println</span>(name);
+}</code></pre>
+
+            <h3>Map (Key-Value Pair - Dictionary jaise)</h3>
+            <div class="file-label">MapExample.java</div>
+            <pre><code><span class="keyword">import</span> java.util.HashMap;
+<span class="keyword">import</span> java.util.Map;
+
+<span class="comment">// Map = Key-Value pairs (jaise phonebook - Name -> Number)</span>
+<span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">Integer</span>&gt; ages = <span class="keyword">new</span> <span class="type">HashMap</span>&lt;&gt;();
+
+<span class="comment">// Key-Value put karna</span>
+ages.<span class="function">put</span>(<span class="string">"Rahul"</span>, <span class="number">20</span>);
+ages.<span class="function">put</span>(<span class="string">"Priya"</span>, <span class="number">22</span>);
+ages.<span class="function">put</span>(<span class="string">"Amit"</span>, <span class="number">21</span>);
+
+<span class="comment">// Key se value nikalna</span>
+System.out.<span class="function">println</span>(ages.<span class="function">get</span>(<span class="string">"Rahul"</span>));  <span class="comment">// 20</span></code></pre>
+
+            <div class="tip">
+                <div class="tip-title">💡 Spring Boot Mein Kahan Use Hota Hai?</div>
+                <ul>
+                    <li><strong>List</strong> - Database se saare records nikalne ke liye (e.g., <code>List&lt;Student&gt; students</code>)</li>
+                    <li><strong>Map</strong> - JSON response banane ke liye (e.g., error messages key-value format mein)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Exception Handling -->
+        <section class="section" id="java-exceptions">
+            <h2>4. Exception Handling ⚠️</h2>
+            <p>
+                Exception = Error jo program run karte waqt aata hai. Agar handle nahi kiya toh program crash ho jayega!
+            </p>
+
+            <div class="file-label">ExceptionExample.java</div>
+            <pre><code><span class="keyword">public class</span> <span class="type">ExceptionExample</span> {
+    <span class="keyword">public static void</span> <span class="function">main</span>(<span class="type">String</span>[] args) {
+        
+        <span class="keyword">try</span> {
+            <span class="comment">// Risky code jo error de sakta hai</span>
+            <span class="type">int</span> result = <span class="number">10</span> / <span class="number">0</span>;  <span class="comment">// Divide by zero! 💥</span>
+        } 
+        <span class="keyword">catch</span> (<span class="type">ArithmeticException</span> e) {
+            <span class="comment">// Error aaya toh yahan handle karo</span>
+            System.out.<span class="function">println</span>(<span class="string">"Bhai, 0 se divide nahi kar sakte!"</span>);
+        }
+        <span class="keyword">finally</span> {
+            <span class="comment">// Ye hamesha chalega chahe error aaye ya na aaye</span>
+            System.out.<span class="function">println</span>(<span class="string">"Ye toh chalega hi!"</span>);
+        }
+        
+        <span class="comment">// Program aage chalega - crash nahi hoga!</span>
+        System.out.<span class="function">println</span>(<span class="string">"Program successfully chal raha hai!"</span>);
+    }
+}</code></pre>
+
+            <table>
+                <tr>
+                    <th>Keyword</th>
+                    <th>Kaam</th>
+                </tr>
+                <tr>
+                    <td><code>try</code></td>
+                    <td>Risky code dalne ke liye jo error de sakta hai</td>
+                </tr>
+                <tr>
+                    <td><code>catch</code></td>
+                    <td>Error pakadne aur handle karne ke liye</td>
+                </tr>
+                <tr>
+                    <td><code>finally</code></td>
+                    <td>Hamesha chalega - cleanup ke liye (optional)</td>
+                </tr>
+                <tr>
+                    <td><code>throw</code></td>
+                    <td>Khud se error throw karne ke liye</td>
+                </tr>
+            </table>
+
+            <div class="note">
+                <div class="note-title">📌 Spring Boot Mein Exception Handling</div>
+                Spring Boot mein <code>@ExceptionHandler</code> annotation se exceptions handle karte hain. 
+                Isse agar API mein error aaye toh user ko accha error message mil jata hai instead of ugly stack trace.
+            </div>
+        </section>
+
+        <!-- Java Annotations -->
+        <section class="section" id="java-annotations">
+            <h2>5. Java Annotations (@) 🏷️</h2>
+            <p>
+                Annotation matlab - code ke upar likha hua special marker jo compiler ya framework ko batata hai 
+                ki iske saath kya karna hai. Spring Boot <strong>pure annotations pe based hai</strong>!
+            </p>
+
+            <h3>Annotations Kya Hote Hain?</h3>
+            <p>
+                Soch le - tu apne doston ko party ke liye invite karta hai. Har invite card pe <strong>@</strong> likhke 
+                kuch special instruction deta hai jaise <code>@DressCode Formal</code> ya <code>@Venue BanquetHall</code>. 
+                Waise hi Java mein <code>@</code> se kuch special instruction dete hain.
+            </p>
+
+            <div class="file-label">AnnotationExample.java</div>
+            <pre><code><span class="comment">// @Override = Bata raha hai ki ye method parent class se override ho raha hai</span>
+<span class="annotation">@Override</span>
+<span class="keyword">public void</span> <span class="function">makeSound</span>() {
+    System.out.<span class="function">println</span>(<span class="string">"Meow!"</span>);
+}
+
+<span class="comment">// @Deprecated = Ye method purana ho gaya hai, mat use karo</span>
+<span class="annotation">@Deprecated</span>
+<span class="keyword">public void</span> <span class="function">oldMethod</span>() {
+    <span class="comment">// Purana code</span>
+}
+
+<span class="comment">// @SuppressWarnings = Compiler warnings ko suppress karne ke liye</span>
+<span class="annotation">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)
+<span class="keyword">public void</span> <span class="function">someMethod</span>() {
+    <span class="comment">// Code with warnings</span>
+}</code></pre>
+
+            <div class="warning">
+                <div class="warning-title">⚠️ Important</div>
+                <strong>Annotations = Magic nahi, Instructions hain!</strong> 
+                Annotation likhne se behind the scenes kaam hota hai. Spring Boot ke annotations se 
+                framework ko pata chalta hai ki kaunsa class kya kaam karega. Ye sab reflection mechanism se hota hai.
+            </div>
+
+            <h3>Annotations Ke Parts</h3>
+            <table>
+                <tr>
+                    <th>Annotation Type</th>
+                    <th>Kya Hota Hai?</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>Marker Annotation</td>
+                    <td>Sirf mark karta hai, koi data nahi</td>
+                    <td><code>@Override</code></td>
+                </tr>
+                <tr>
+                    <td>Single-Value Annotation</td>
+                    <td>Ek value deta hai</td>
+                    <td><code>@RequestMapping("/api")</code></td>
+                </tr>
+                <tr>
+                    <td>Multi-Value Annotation</td>
+                    <td>Kai values deta hai</td>
+                    <td><code>@GetMapping(path="/users", produces="application/json")</code></td>
+                </tr>
+                <tr>
+                    <td>Meta Annotation</td>
+                    <td>Annotation pe annotation</td>
+                    <td><code>@Target</code>, <code>@Retention</code></td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Maven -->
+        <section class="section" id="maven">
+            <h2>6. Maven Kya Hai? 📦</h2>
+            <p>
+                Maven ek <strong>build tool</strong> hai jo tere project ko manage karta hai. Soch le - tu ek project bana raha hai 
+                jisme bahut saari libraries (jaar files) chahiye. Maven automatically un libraries ko download karke manage kar leta hai!
+            </p>
+
+            <h3>Maven Ke Fayde</h3>
+            <ul>
+                <li>Libraries <strong>automatically download</strong> karta hai (tera repo mein <code>.mvn</code> folder isi ka kaam hai)</li>
+                <li>Project ka structure fix kar deta hai</li>
+                <li>Build, test, run - sab ek command se</li>
+                <li>Dependencies manage karta hai (kis library ka kaunsa version chahiye)</li>
+            </ul>
+
+            <div class="file-label">Maven Commands</div>
+            <pre><code><span class="comment"># Project run karne ke liye (tuje yahi sabse zyada use hoga)</span>
+./mvnw spring-boot:run
+
+<span class="comment"># Project build karne ke liye</span>
+./mvnw clean install
+
+<span class="comment"># Tests run karne ke liye</span>
+./mvnw test
+
+<span class="comment"># Windows mein (tuje mvnw.cmd dikh raha hoga na)</span>
+mvnw.cmd spring-boot:run</code></pre>
+        </section>
+
+        <section class="section" id="pom-xml">
+            <h3>pom.xml Samajhna (Tere Repo Se)</h3>
+            <p>
+                Tere GitHub repo mein <code>pom.xml</code> file hai. Ye Maven ka heart hai! Isme project ki saari settings aur 
+                dependencies hoti hain.
+            </p>
+
+            <div class="file-label">pom.xml (Tere Repo Ka)</div>
+            <pre><code>&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;
+&lt;<span class="keyword">project</span>&gt;
+    <span class="comment">&lt;!-- Parent Spring Boot - Ye batata hai ki ye Spring Boot project hai --&gt;</span>
+    &lt;<span class="keyword">parent</span>&gt;
+        &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+        &lt;<span class="keyword">artifactId</span>&gt;spring-boot-starter-parent&lt;/<span class="keyword">artifactId</span>&gt;
+        &lt;<span class="keyword">version</span>&gt;3.5.5&lt;/<span class="keyword">version</span>&gt;
+    &lt;/<span class="keyword">parent</span>&gt;
+    
+    <span class="comment">&lt;!-- Project ki details --&gt;</span>
+    &lt;<span class="keyword">groupId</span>&gt;com.bitsandbytes&lt;/<span class="keyword">groupId</span>&gt;
+    &lt;<span class="keyword">artifactId</span>&gt;productlist&lt;/<span class="keyword">artifactId</span>&gt;
+    &lt;<span class="keyword">version</span>&gt;0.0.1-SNAPSHOT&lt;/<span class="keyword">version</span>&gt;
+    &lt;<span class="keyword">name</span>&gt;productlist&lt;/<span class="keyword">name</span>&gt;
+    
+    <span class="comment">&lt;!-- Java version --&gt;</span>
+    &lt;<span class="keyword">properties</span>&gt;
+        &lt;<span class="keyword">java.version</span>&gt;24&lt;/<span class="keyword">java.version</span>&gt;
+    &lt;/<span class="keyword">properties</span>&gt;
+    
+    <span class="comment">&lt;!-- Dependencies = Libraries jo project mein chahiye --&gt;</span>
+    &lt;<span class="keyword">dependencies</span>&gt;
+        <span class="comment">&lt;!-- Spring Boot Web - REST API banane ke liye --&gt;</span>
+        &lt;<span class="keyword">dependency</span>&gt;
+            &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+            &lt;<span class="keyword">artifactId</span>&gt;spring-boot-starter-web&lt;/<span class="keyword">artifactId</span>&gt;
+        &lt;/<span class="keyword">dependency</span>&gt;
+        
+        <span class="comment">&lt;!-- Spring Data JPA - Database se baat karne ke liye --&gt;</span>
+        &lt;<span class="keyword">dependency</span>&gt;
+            &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+            &lt;<span class="keyword">artifactId</span>&gt;spring-boot-starter-data-jpa&lt;/<span class="keyword">artifactId</span>&gt;
+        &lt;/<span class="keyword">dependency</span>&gt;
+        
+        <span class="comment">&lt;!-- H2 Database - Testing ke liye in-memory database --&gt;</span>
+        &lt;<span class="keyword">dependency</span>&gt;
+            &lt;<span class="keyword">groupId</span>&gt;com.h2database&lt;/<span class="keyword">groupId</span>&gt;
+            &lt;<span class="keyword">artifactId</span>&gt;h2&lt;/<span class="keyword">artifactId</span>&gt;
+            &lt;<span class="keyword">scope</span>&gt;runtime&lt;/<span class="keyword">scope</span>&gt;
+        &lt;/<span class="keyword">dependency</span>&gt;
+        
+        <span class="comment">&lt;!-- DevTools - Auto restart development ke liye --&gt;</span>
+        &lt;<span class="keyword">dependency</span>&gt;
+            &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+            &lt;<span class="keyword">artifactId</span>&gt;spring-boot-devtools&lt;/<span class="keyword">artifactId</span>&gt;
+            &lt;<span class="keyword">scope</span>&gt;runtime&lt;/<span class="keyword">scope</span>&gt;
+        &lt;/<span class="keyword">dependency</span>&gt;
+        
+        <span class="comment">&lt;!-- Lombok - Code kam likhne ke liye --&gt;</span>
+        &lt;<span class="keyword">dependency</span>&gt;
+            &lt;<span class="keyword">groupId</span>&gt;org.projectlombok&lt;/<span class="keyword">groupId</span>&gt;
+            &lt;<span class="keyword">artifactId</span>&gt;lombok&lt;/<span class="keyword">artifactId</span>&gt;
+            &lt;<span class="keyword">optional</span>&gt;true&lt;/<span class="keyword">optional</span>&gt;
+        &lt;/<span class="keyword">dependency</span>&gt;
+        
+        <span class="comment">&lt;!-- Spring Boot Test - Testing ke liye --&gt;</span>
+        &lt;<span class="keyword">dependency</span>&gt;
+            &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+            &lt;<span class="keyword">artifactId</span>&gt;spring-boot-starter-test&lt;/<span class="keyword">artifactId</span>&gt;
+            &lt;<span class="keyword">scope</span>&gt;test&lt;/<span class="keyword">scope</span>&gt;
+        &lt;/<span class="keyword">dependency</span>&gt;
+    &lt;/<span class="keyword">dependencies</span>&gt;
+&lt;/<span class="keyword">project</span>&gt;</code></pre>
+
+            <div class="tip">
+                <div class="tip-title">💡 Dependency Kya Hoti Hai?</div>
+                <p>
+                    Dependency matlab - kisi aur ka code jo tu apne project mein use karta hai. 
+                    Jaise <code>spring-boot-starter-web</code> se tujhe REST API banane ke saare tools mil jaate hain. 
+                    Maven in libraries ko <strong>automatically download</strong> kar leta hai!
+                </p>
+            </div>
+        </section>
+
+        <!-- Spring Boot Introduction -->
+        <section class="section" id="spring-intro">
+            <h2>Spring Boot Kya Hai? 🌱</h2>
+            <p>
+                <strong>Spring Boot</strong> Java mein applications banane ka framework hai jo <strong>fast, easy aur production-ready</strong> 
+                apps banane mein madad karta hai. Isme already bahut saari cheezein configured hoti hain - 
+                tujhe bas apna business logic likhna hai!
+            </p>
+
+            <h3>Spring Boot Ke Fayde</h3>
+            <ul>
+                <li><strong>Auto Configuration</strong> - Bahut saari cheezein automatically set up hoti hain</li>
+                <li><strong>Standalone</strong> - Server (Tomcat) already included hai, alag se install nahi karna</li>
+                <li><strong>Opinionated</strong> - Best practices by default follow karta hai</li>
+                <li><strong>Microservices</strong> - Choti-choti services banane ke liye perfect hai</li>
+                <li><strong>Production Ready</strong> - Health checks, metrics sab built-in hain</li>
+            </ul>
+
+            <div class="note">
+                <div class="note-title">📌 Spring vs Spring Boot</div>
+                <p>
+                    <strong>Spring</strong> = Framework with lots of configuration (XML likhna padta tha)<br>
+                    <strong>Spring Boot</strong> = Spring ka wrapper jo configuration kam kar deta hai (Annotations se kaam chal jata hai)
+                </p>
+                <p>Matlab - <strong>Spring Boot = Spring - Boilerplate Code</strong></p>
+            </div>
+        </section>
+
+        <!-- Project Setup -->
+        <section class="section" id="spring-setup">
+            <h2>Spring Boot Project Setup 🛠️</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <h4>spring.io/start se Project Banana</h4>
+                <p>
+                    Browser mein ja: <a href="https://start.spring.io" style="color: var(--primary);">https://start.spring.io</a><br>
+                    Ye Spring ka official project generator hai.
+                </p>
+                <table>
+                    <tr><th>Field</th><th>Value Daal</th></tr>
+                    <tr><td>Project</td><td>Maven</td></tr>
+                    <tr><td>Language</td><td>Java</td></tr>
+                    <tr><td>Spring Boot</td><td>3.5.5 (ya latest stable)</td></tr>
+                    <tr><td>Group</td><td>com.bitsandbytes (tera repo jaisa)</td></tr>
+                    <tr><td>Artifact</td><td>studentapi</td></tr>
+                    <tr><td>Name</td><td>studentapi</td></tr>
+                    <tr><td>Package</td><td>com.bitsandbytes.studentapi</td></tr>
+                    <tr><td>Java</td><td>17+ (tera 24 hai)</td></tr>
+                </table>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <h4>Dependencies Add Karna</h4>
+                <p>"Add Dependencies" button pe click karke ye add kar:</p>
+                <ul>
+                    <li><strong>Spring Web</strong> - REST API banane ke liye</li>
+                    <li><strong>Spring Data JPA</strong> - Database operations ke liye</li>
+                    <li><strong>H2 Database</strong> - In-memory database testing ke liye</li>
+                    <li><strong>Lombok</strong> - Code kam likhne ke liye</li>
+                    <li><strong>Spring Boot DevTools</strong> - Auto restart ke liye</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <h4>Generate & Import</h4>
+                <p>"Generate" button pe click kar - ZIP file download hoga. Isko extract kar aur apne IDE (IntelliJ/Eclipse) mein import kar:</p>
+                <pre><code>File → Open → project folder select karo → OK</code></pre>
+            </div>
+        </section>
+
+        <!-- Project Structure -->
+        <section class="section" id="project-structure">
+            <h2>Project Structure Samajhna 📁</h2>
+            <p>
+                Tere GitHub repo ka structure aise hai. Ab isko detail mein samajhte hain:
+            </p>
+
+            <div class="tree">
+<span class="folder">Spring_boot/</span>                    <span class="comment">-- Root folder</span>
+├── <span class="folder">.mvn/wrapper/</span>                <span class="comment">-- Maven wrapper (Maven install nahi karna padta)</span>
+├── <span class="folder">src/</span>                       <span class="comment">-- Source code</span>
+│   ├── <span class="folder">main/</span>                  <span class="comment">-- Main application code</span>
+│   │   ├── <span class="folder">java/com/bitsandbytes/productlist/</span>
+│   │   │   └── <span class="file">ProductlistApplication.java</span>  <span class="comment">-- Main class (entry point)</span>
+│   │   └── <span class="folder">resources/</span>       <span class="comment">-- Config files, static files</span>
+│   │       └── <span class="file">application.properties</span>     <span class="comment">-- App configuration</span>
+│   └── <span class="folder">test/</span>                  <span class="comment">-- Test code</span>
+│       └── <span class="folder">java/com/bitsandbytes/productlist/</span>
+├── <span class="file">pom.xml</span>                      <span class="comment">-- Maven configuration (dependencies)</span>
+├── <span class="file">mvnw</span>                       <span class="comment">-- Maven wrapper (Linux/Mac)</span>
+├── <span class="file">mvnw.cmd</span>                   <span class="comment">-- Maven wrapper (Windows)</span>
+└── <span class="file">.gitignore</span>                   <span class="comment">-- Git ignore rules</span>
+
+<span class="comment">/* Project ko Organize Karne Ke Liye Aur Folders */</span>
+<span class="folder">src/main/java/com/bitsandbytes/productlist/</span>
+├── <span class="file">ProductlistApplication.java</span>     <span class="comment">-- Main class</span>
+├── <span class="folder">controller/</span>                 <span class="comment">-- API endpoints (HTTP requests handle karega)</span>
+│   └── <span class="file">StudentController.java</span>
+├── <span class="folder">service/</span>                    <span class="comment">-- Business logic</span>
+│   └── <span class="file">StudentService.java</span>
+├── <span class="folder">repository/</span>                 <span class="comment">-- Database operations</span>
+│   └── <span class="file">StudentRepository.java</span>
+├── <span class="folder">model/</span>                      <span class="comment">-- Data classes (Entity)</span>
+│   └── <span class="file">Student.java</span>
+└── <span class="folder">exception/</span>                  <span class="comment">-- Custom exceptions</span>
+    └── <span class="file">GlobalExceptionHandler.java</span></div>
+
+            <div class="remember">
+                <div class="remember-title">🧠 Yaad Rakh - Package Structure Important Hai!</div>
+                <p>
+                    <strong>Main class</strong> (jisme <code>@SpringBootApplication</code> hai) sabse upar <code>com.bitsandbytes.productlist</code> 
+                    package mein hai. Baaki saari classes iske <strong>niche</strong> honi chahiye (sub-packages mein). 
+                    Spring Boot automatically in sub-packages ko scan karta hai. Agar bahar rakhi toh scan nahi hogi!
+                </p>
+            </div>
+        </section>
+
+        <!-- Annotations Deep Dive -->
+        <section class="section" id="annotations">
+            <h2>Annotations Deep Dive 🔍</h2>
+            <p>
+                Bhai, ye section sabse important hai! Annotations Spring Boot ka <strong>dil</strong> hain. 
+                Har annotation ko detail mein samajh lega toh kabhi problem nahi hogi.
+            </p>
+
+            <!-- @SpringBootApplication -->
+            <div class="annotation-card">
+                <h4>@SpringBootApplication</h4>
+                <p><strong>Kya hai?</strong> Ye 3 annotations ka combination hai - main class ke upar lagta hai</p>
+                <p><strong>Kyun lagate hain?</strong> Spring Boot ko batata hai ki "Bhai, ye main class hai, yahan se shuru karna!"</p>
+                
+                <div class="file-label">Tere Repo Ka Code</div>
+                <pre><code><span class="annotation">@SpringBootApplication</span>  <span class="comment">// = @Configuration + @EnableAutoConfiguration + @ComponentScan</span>
+<span class="keyword">public class</span> <span class="type">ProductlistApplication</span> {
+    <span class="keyword">public static void</span> <span class="function">main</span>(<span class="type">String</span>[] args) {
+        SpringApplication.<span class="function">run</span>(ProductlistApplication.<span class="keyword">class</span>, args);
+    }
+}</code></pre>
+                
+                <table>
+                    <tr><th>Andar Ka Kaam</th><th>Matlab</th></tr>
+                    <tr><td><code>@Configuration</code></td><td>"Is class mein configuration hai"</td></tr>
+                    <tr><td><code>@EnableAutoConfiguration</code></td><td>"Automatically configure kar de jo chahiye"</td></tr>
+                    <tr><td><code>@ComponentScan</code></td><td>"Is package aur sub-packages mein components dhoondh"</td></tr>
+                </table>
+            </div>
+
+            <!-- @RestController -->
+            <div class="annotation-card">
+                <h4>@RestController</h4>
+                <p><strong>Kya hai?</strong> Class ko <strong>REST Controller</strong> banata hai - HTTP requests handle karne wala</p>
+                <p><strong>Kyun lagate hain?</strong> Is class mein jo methods honge wo API endpoints ban jayenge</p>
+                <p><strong>Combination:</strong> <code>@Controller</code> + <code>@ResponseBody</code></p>
+                
+                <pre><code><span class="annotation">@RestController</span>  <span class="comment">// "Bhai, ye class API requests handle karegi"</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/students"</span>)  <span class="comment">// Base path for all APIs</span>
+<span class="keyword">public class</span> <span class="type">StudentController</span> {
+    
+    <span class="annotation">@GetMapping</span>(<span class="string">"/"</span>)  <span class="comment">// GET /api/students/ = Sab students lao</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">getAllStudents</span>() {
+        <span class="keyword">return</span> studentService.<span class="function">findAll</span>();
+    }
+}</code></pre>
+            </div>
+
+            <!-- @GetMapping, @PostMapping, etc -->
+            <div class="annotation-card">
+                <h4>@GetMapping, @PostMapping, @PutMapping, @DeleteMapping</h4>
+                <p><strong>Kya hai?</strong> HTTP methods ko Java methods se map karne ke liye</p>
+                
+                <table>
+                    <tr><th>Annotation</th><th>HTTP Method</th><th>Kaam</th><th>Example</th></tr>
+                    <tr>
+                        <td><code>@GetMapping</code></td>
+                        <td>GET</td>
+                        <td>Data read/get karne ke liye</td>
+                        <td><code>@GetMapping("/{id}")</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>@PostMapping</code></td>
+                        <td>POST</td>
+                        <td>Naya data create karne ke liye</td>
+                        <td><code>@PostMapping("/")</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>@PutMapping</code></td>
+                        <td>PUT</td>
+                        <td>Poora data update karne ke liye</td>
+                        <td><code>@PutMapping("/{id}")</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>@DeleteMapping</code></td>
+                        <td>DELETE</td>
+                        <td>Data delete karne ke liye</td>
+                        <td><code>@DeleteMapping("/{id}")</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>@PatchMapping</code></td>
+                        <td>PATCH</td>
+                        <td>Partial update ke liye</td>
+                        <td><code>@PatchMapping("/{id}")</code></td>
+                    </tr>
+                </table>
+
+                <pre><code><span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/students"</span>)
+<span class="keyword">public class</span> <span class="type">StudentController</span> {
+
+    <span class="comment">// GET http://localhost:8080/api/students → Sab students</span>
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">getAll</span>() { ... }
+
+    <span class="comment">// GET http://localhost:8080/api/students/1 → Student with id=1</span>
+    <span class="annotation">@GetMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">getById</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) { ... }
+
+    <span class="comment">// POST http://localhost:8080/api/students → Naya student create</span>
+    <span class="annotation">@PostMapping</span>
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">create</span>(<span class="annotation">@RequestBody</span> <span class="type">Student</span> student) { ... }
+
+    <span class="comment">// PUT http://localhost:8080/api/students/1 → Student update</span>
+    <span class="annotation">@PutMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">update</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id, <span class="annotation">@RequestBody</span> <span class="type">Student</span> student) { ... }
+
+    <span class="comment">// DELETE http://localhost:8080/api/students/1 → Student delete</span>
+    <span class="annotation">@DeleteMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public void</span> <span class="function">delete</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) { ... }
+}</code></pre>
+            </div>
+
+            <!-- @PathVariable -->
+            <div class="annotation-card">
+                <h4>@PathVariable</h4>
+                <p><strong>Kya hai?</strong> URL path se variable value nikalne ke liye</p>
+                <p><strong>Example:</strong> URL <code>/students/5</code> mein se <code>5</code> ko <code>id</code> variable mein dalna</p>
+                
+                <pre><code><span class="comment">// URL: /api/students/5 → id = 5</span>
+<span class="annotation">@GetMapping</span>(<span class="string">"/{id}"</span>)
+<span class="keyword">public</span> <span class="type">Student</span> <span class="function">getStudent</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) {
+    <span class="comment">// id ki value 5 hogi!</span>
+    <span class="keyword">return</span> studentService.<span class="function">findById</span>(id);
+}
+
+<span class="comment">// Multiple path variables bhi le sakte hain</span>
+<span class="annotation">@GetMapping</span>(<span class="string">"/{studentId}/courses/{courseId}"</span>)
+<span class="keyword">public</span> <span class="type">Course</span> <span class="function">getCourse</span>(
+        <span class="annotation">@PathVariable</span> <span class="type">Long</span> studentId,
+        <span class="annotation">@PathVariable</span> <span class="type">Long</span> courseId) {
+    <span class="comment">// Dono values mil jayengi!</span>
+}</code></pre>
+            </div>
+
+            <!-- @RequestBody -->
+            <div class="annotation-card">
+                <h4>@RequestBody</h4>
+                <p><strong>Kya hai?</strong> HTTP request ke body se JSON data ko Java object mein convert karta hai</p>
+                <p><strong>Example:</strong> Client ne <code>{"name":"Rahul","age":20}</code> bheja → Student object ban jayega</p>
+                
+                <pre><code><span class="comment">// Client bhejega: {"name": "Rahul", "age": 20, "email": "rahul@test.com"}</span>
+<span class="annotation">@PostMapping</span>
+<span class="keyword">public</span> <span class="type">Student</span> <span class="function">createStudent</span>(<span class="annotation">@RequestBody</span> <span class="type">Student</span> student) {
+    <span class="comment">/* 
+       Spring Boot automatically JSON → Student object convert kar dega!
+       student.getName() = "Rahul"
+       student.getAge() = 20
+    */</span>
+    <span class="keyword">return</span> studentService.<span class="function">save</span>(student);
+}</code></pre>
+
+                <div class="tip">
+                    <div class="tip-title">💡 @RequestBody Ka Magic</div>
+                    <p>
+                        <code>@RequestBody</code> lagane se Spring Boot <strong>Jackson library</strong> use karke 
+                        automatically JSON ko Java object mein convert kar deta hai. Tujhe khud parse nahi karna padta!
+                    </p>
+                </div>
+            </div>
+
+            <!-- @RequestParam -->
+            <div class="annotation-card">
+                <h4>@RequestParam</h4>
+                <p><strong>Kya hai?</strong> URL ke query parameters se value nikalne ke liye</p>
+                <p><strong>Example:</strong> URL <code>/students?name=Rahul</code> mein se <code>name</code> ki value nikalna</p>
+                
+                <pre><code><span class="comment">// URL: /api/students/search?name=Rahul → name = "Rahul"</span>
+<span class="annotation">@GetMapping</span>(<span class="string">"/search"</span>)
+<span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">searchByName</span>(<span class="annotation">@RequestParam</span> <span class="type">String</span> name) {
+    <span class="keyword">return</span> studentService.<span class="function">findByName</span>(name);
+}
+
+<span class="comment">// Optional parameter bhi bana sakte hain</span>
+<span class="annotation">@GetMapping</span>(<span class="string">"/filter"</span>)
+<span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">filter</span>(
+        <span class="annotation">@RequestParam</span>(required = <span class="keyword">false</span>) <span class="type">String</span> name,
+        <span class="annotation">@RequestParam</span>(required = <span class="keyword">false</span>, defaultValue = <span class="string">"18"</span>) <span class="type">int</span> minAge) {
+    <span class="comment">// name optional hai, minAge default 18 hogi</span>
+}</code></pre>
+
+                <div class="note">
+                    <div class="note-title">📌 @PathVariable vs @RequestParam</div>
+                    <p>
+                        <code>@PathVariable</code> = URL path se value → <code>/students/<strong>5</strong></code><br>
+                        <code>@RequestParam</code> = URL query se value → <code>/students?<strong>name=Rahul</strong></code>
+                    </p>
+                </div>
+            </div>
+
+            <!-- @Autowired -->
+            <div class="annotation-card">
+                <h4>@Autowired</h4>
+                <p><strong>Kya hai?</strong> Spring ko batata hai ki is field/method mein <strong>dependency inject</strong> karni hai</p>
+                <p><strong>Simple bhasha mein:</strong> Spring automatically object bana ke de dega, tujhe <code>new</code> nahi karna!</p>
+                
+                <pre><code><span class="annotation">@RestController</span>
+<span class="keyword">public class</span> <span class="type">StudentController</span> {
+    
+    <span class="annotation">@Autowired</span>  <span class="comment">// "Spring bhai, StudentService ka object bana ke yahan daal de!"</span>
+    <span class="keyword">private</span> <span class="type">StudentService</span> studentService;
+    
+    <span class="comment">// Ab tu studentService use kar sakta hai - new nahi karna pada!</span>
+}</code></pre>
+
+                <div class="tip">
+                    <div class="tip-title">💡 Modern Spring Boot Mein (Recommended)</div>
+                    <p>
+                        Ab <code>@Autowired</code> lagane ki zaroorat nahi hai - <strong>Constructor Injection</strong> use karo:
+                    </p>
+                    <pre><code><span class="annotation">@RestController</span>
+<span class="keyword">public class</span> <span class="type">StudentController</span> {
+    
+    <span class="keyword">private final</span> <span class="type">StudentService</span> studentService;
+    
+    <span class="comment">// Constructor se Spring automatically inject kar dega - @Autowired nahi chahiye!</span>
+    <span class="keyword">public</span> <span class="function">StudentController</span>(<span class="type">StudentService</span> studentService) {
+        <span class="keyword">this</span>.studentService = studentService;
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- @Entity -->
+            <div class="annotation-card">
+                <h4>@Entity, @Table, @Id, @GeneratedValue</h4>
+                <p><strong>Kya hai?</strong> Java class ko <strong>Database Table</strong> se map karne ke liye (JPA)</p>
+                
+                <pre><code><span class="annotation">@Entity</span>  <span class="comment">// "Ye class ek database table hai"</span>
+<span class="annotation">@Table</span>(name = <span class="string">"students"</span>)  <span class="comment">// Table ka naam "students" hoga</span>
+<span class="keyword">public class</span> <span class="type">Student</span> {
+    
+    <span class="annotation">@Id</span>  <span class="comment">// "Ye primary key hai"</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)  <span class="comment">// Auto increment</span>
+    <span class="keyword">private</span> <span class="type">Long</span> id;
+    
+    <span class="annotation">@Column</span>(name = <span class="string">"student_name"</span>, nullable = <span class="keyword">false</span>)  <span class="comment">// Column mapping</span>
+    <span class="keyword">private</span> <span class="type">String</span> name;
+    
+    <span class="annotation">@Column</span>
+    <span class="keyword">private</span> <span class="type">int</span> age;
+    
+    <span class="comment">// Getters & Setters</span>
+}</code></pre>
+
+                <table>
+                    <tr><th>Annotation</th><th>Kaam</th></tr>
+                    <tr><td><code>@Entity</code></td><td>Class ko database table mark karta hai</td></tr>
+                    <tr><td><code>@Table(name="xyz")</code></td><td>Table ka naam set karta hai</td></tr>
+                    <tr><td><code>@Id</code></td><td>Primary key column mark karta hai</td></tr>
+                    <tr><td><code>@GeneratedValue</code></td><td>ID auto-generate karta hai</td></tr>
+                    <tr><td><code>@Column</code></td><td>Column properties set karta hai</td></tr>
+                </table>
+            </div>
+
+            <!-- @Repository -->
+            <div class="annotation-card">
+                <h4>@Repository</h4>
+                <p><strong>Kya hai?</strong> Class ko <strong>Data Access Layer</strong> mark karta hai - database se baat karne wala</p>
+                <p><strong>Spring ise automatically scan karta hai</strong> aur <code>@Autowired</code> ke time inject kar deta hai</p>
+                
+                <pre><code><span class="annotation">@Repository</span>  <span class="comment">// "Ye class database se baat karegi"</span>
+<span class="keyword">public interface</span> <span class="type">StudentRepository</span> <span class="keyword">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Student</span>, <span class="type">Long</span>&gt; {
+    <span class="comment">// JpaRepository extend karne se CRUD methods automatically mil jaate hain!</span>
+    <span class="comment">// save(), findAll(), findById(), deleteById() - sab ready!</span>
+}</code></pre>
+            </div>
+
+            <!-- @Service -->
+            <div class="annotation-card">
+                <h4>@Service</h4>
+                <p><strong>Kya hai?</strong> Class ko <strong>Business Logic Layer</strong> mark karta hai</p>
+                <p><strong>Controller se data aata hai → Service mein process hota hai → Repository mein jata hai</strong></p>
+                
+                <pre><code><span class="annotation">@Service</span>  <span class="comment">// "Ye class business logic handle karegi"</span>
+<span class="keyword">public class</span> <span class="type">StudentService</span> {
+    
+    <span class="keyword">private final</span> <span class="type">StudentRepository</span> studentRepository;
+    
+    <span class="keyword">public</span> <span class="function">StudentService</span>(<span class="type">StudentRepository</span> studentRepository) {
+        <span class="keyword">this</span>.studentRepository = studentRepository;
+    }
+    
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">findAll</span>() {
+        <span class="keyword">return</span> studentRepository.<span class="function">findAll</span>();
+    }
+    
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">save</span>(<span class="type">Student</span> student) {
+        <span class="comment">// Business logic - validation, processing, etc.</span>
+        <span class="keyword">return</span> studentRepository.<span class="function">save</span>(student);
+    }
+}</code></pre>
+            </div>
+
+            <!-- @Component -->
+            <div class="annotation-card">
+                <h4>@Component (Generic)</h4>
+                <p><strong>Kya hai?</strong> Generic annotation jo kisi bhi class ko Spring <strong>Bean</strong> banata hai</p>
+                <p><strong>@Service, @Repository, @Controller</strong> - ye sab @Component ke specialized versions hain</p>
+                
+                <pre><code><span class="annotation">@Component</span>  <span class="comment">// Generic - "Ye bhi Spring ka component hai"</span>
+<span class="keyword">public class</span> <span class="type">EmailService</span> {
+    <span class="keyword">public void</span> <span class="function">sendEmail</span>(<span class="type">String</span> to, <span class="type">String</span> message) {
+        <span class="comment">// Email sending logic</span>
+    }
+}</code></pre>
+            </div>
+
+            <!-- @ResponseBody & @RequestMapping -->
+            <div class="annotation-card">
+                <h4>@ResponseBody aur @RequestMapping</h4>
+                
+                <p><strong>@ResponseBody</strong> - Java object ko automatically JSON mein convert karta hai response mein</p>
+                <p><strong>@RequestMapping</strong> - Generic mapping (sare HTTP methods allow karta hai)</p>
+                
+                <pre><code><span class="comment">// @RequestMapping = Generic - GET, POST, PUT, DELETE sab allow karega</span>
+<span class="annotation">@RequestMapping</span>(value = <span class="string">"/students"</span>, method = RequestMethod.GET)
+<span class="comment">// ↕ Same thing</span>
+<span class="annotation">@GetMapping</span>(<span class="string">"/students"</span>)  <span class="comment">// Shortcut - sirf GET allow karega</span>
+
+<span class="comment">// @ResponseBody - Object ko JSON mein convert karega</span>
+<span class="annotation">@Controller</span>
+<span class="keyword">public class</span> <span class="type">OldStyleController</span> {
+    
+    <span class="annotation">@GetMapping</span>(<span class="string">"/student"</span>)
+    <span class="annotation">@ResponseBody</span>  <span class="comment">// Ye lagana padta tha pehle</span>
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">getStudent</span>() { ... }
+}
+
+<span class="comment">// @RestController = @Controller + @ResponseBody (dono ka kaam ek mein!)</span>
+<span class="annotation">@RestController</span>  <span class="comment">// Ab @ResponseBody alag se nahi lagana!</span>
+<span class="keyword">public class</span> <span class="type">ModernController</span> { ... }</code></pre>
+            </div>
+        </section>
+
+        <!-- REST API Concepts -->
+        <section class="section" id="rest-intro">
+            <h2>REST API Kya Hai? 🌐</h2>
+            <p>
+                <strong>REST API (Representational State Transfer)</strong> ek tarika hai jisse do applications 
+                internet ke zariye baat kar sakti hain. Soch le - teri Spring Boot app <strong>server</strong> hai 
+                aur browser/phone app <strong>client</strong> hai. REST API unke beech ka raasta hai.
+            </p>
+
+            <h3>Real Life Example</h3>
+            <p>
+                Restaurant mein soch: Tu <strong>client</strong> hai, waiter <strong>API</strong> hai, aur kitchen <strong>server</strong> hai.
+                Tu waiter ko order deta hai (request) → waiter kitchen mein jata hai → khana le ke aata hai (response).
+                <strong>Waiter = API</strong> jo tuje kitchen ke saare internals nahi batata, bas order leke response deta hai!
+            </p>
+
+            <div class="note">
+                <div class="note-title">📌 REST API Ke Rules</div>
+                <ul>
+                    <li><strong>Stateless</strong> - Har request independent hoti hai, server ko pehli request ki yaad nahi rehti</li>
+                    <li><strong>Resource-based</strong> - Har cheez ek resource hai (jaise <code>/students</code>, <code>/courses</code>)</li>
+                    <li><strong>JSON/XML</strong> - Data JSON format mein exchange hota hai</li>
+                    <li><strong>HTTP Methods</strong> - GET, POST, PUT, DELETE use hote hain</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="http-methods">
+            <h2>HTTP Methods (CRUD Operations) 🔧</h2>
+            
+            <table>
+                <tr>
+                    <th>Operation</th>
+                    <th>HTTP Method</th>
+                    <th>URL Example</th>
+                    <th>Kya Karega?</th>
+                </tr>
+                <tr>
+                    <td><strong>C</strong>reate</td>
+                    <td>POST</td>
+                    <td><code>/api/students</code></td>
+                    <td>Naya student create karega</td>
+                </tr>
+                <tr>
+                    <td><strong>R</strong>ead</td>
+                    <td>GET</td>
+                    <td><code>/api/students</code></td>
+                    <td>Sab students dikhayega</td>
+                </tr>
+                <tr>
+                    <td><strong>R</strong>ead (One)</td>
+                    <td>GET</td>
+                    <td><code>/api/students/1</code></td>
+                    <td>Student with id=1 dikhayega</td>
+                </tr>
+                <tr>
+                    <td><strong>U</strong>pdate</td>
+                    <td>PUT</td>
+                    <td><code>/api/students/1</code></td>
+                    <td>Student with id=1 update karega</td>
+                </tr>
+                <tr>
+                    <td><strong>D</strong>elete</td>
+                    <td>DELETE</td>
+                    <td><code>/api/students/1</code></td>
+                    <td>Student with id=1 delete karega</td>
+                </tr>
+            </table>
+
+            <div class="file-label">Complete REST Controller Example</div>
+            <pre><code><span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/students"</span>)
+<span class="keyword">public class</span> <span class="type">StudentController</span> {
+
+    <span class="keyword">private final</span> <span class="type">StudentService</span> studentService;
+    
+    <span class="keyword">public</span> <span class="function">StudentController</span>(<span class="type">StudentService</span> studentService) {
+        <span class="keyword">this</span>.studentService = studentService;
+    }
+
+    <span class="comment">// CREATE - Naya student</span>
+    <span class="annotation">@PostMapping</span>
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">createStudent</span>(<span class="annotation">@RequestBody</span> <span class="type">Student</span> student) {
+        <span class="keyword">return</span> studentService.<span class="function">save</span>(student);
+    }
+
+    <span class="comment">// READ ALL - Sab students</span>
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">getAllStudents</span>() {
+        <span class="keyword">return</span> studentService.<span class="function">findAll</span>();
+    }
+
+    <span class="comment">// READ ONE - Ek student</span>
+    <span class="annotation">@GetMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">getStudent</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) {
+        <span class="keyword">return</span> studentService.<span class="function">findById</span>(id);
+    }
+
+    <span class="comment">// UPDATE - Student update</span>
+    <span class="annotation">@PutMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">updateStudent</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id, <span class="annotation">@RequestBody</span> <span class="type">Student</span> student) {
+        student.<span class="function">setId</span>(id);
+        <span class="keyword">return</span> studentService.<span class="function">save</span>(student);
+    }
+
+    <span class="comment">// DELETE - Student delete</span>
+    <span class="annotation">@DeleteMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public void</span> <span class="function">deleteStudent</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) {
+        studentService.<span class="function">deleteById</span>(id);
+    }
+}</code></pre>
+        </section>
+
+        <section class="section" id="http-status">
+            <h2>HTTP Status Codes 🔢</h2>
+            <p>
+                API response ke saath ek <strong>status code</strong> bhi jata hai jo batata hai ki request ka kya hua.
+            </p>
+            
+            <table>
+                <tr><th>Code</th><th>Meaning</th><th>Kab Milta Hai?</th></tr>
+                <tr><td><code>200 OK</code></td><td>Success</td><td>GET request successful</td></tr>
+                <tr><td><code>201 Created</code></td><td>Created</td><td>POST request successful, naya resource bana</td></tr>
+                <tr><td><code>204 No Content</code></td><td>Deleted</td><td>DELETE successful</td></tr>
+                <tr><td><code>400 Bad Request</code></td><td>Client Error</td><td>Request mein kuch galat hai</td></tr>
+                <tr><td><code>404 Not Found</code></td><td>Not Found</td><td>Resource nahi mila</td></tr>
+                <tr><td><code>500 Internal Server Error</code></td><td>Server Error</td><td>Server mein kuch toot gaya</td></tr>
+            </table>
+
+            <div class="file-label">Status Codes Ke Saath Response</div>
+            <pre><code><span class="annotation">@PostMapping</span>
+<span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">Student</span>&gt; <span class="function">createStudent</span>(<span class="annotation">@RequestBody</span> <span class="type">Student</span> student) {
+    <span class="type">Student</span> saved = studentService.<span class="function">save</span>(student);
+    <span class="keyword">return</span> <span class="type">ResponseEntity</span>
+            .<span class="function">status</span>(HttpStatus.CREATED)  <span class="comment">// 201 status code</span>
+            .<span class="function">body</span>(saved);
+}
+
+<span class="annotation">@DeleteMapping</span>(<span class="string">"/{id}"</span>)
+<span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">Void</span>&gt; <span class="function">deleteStudent</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) {
+    studentService.<span class="function">deleteById</span>(id);
+    <span class="keyword">return</span> <span class="type">ResponseEntity</span>
+            .<span class="function">noContent</span>()  <span class="comment">// 204 status code</span>
+            .<span class="function">build</span>();
+}</code></pre>
+        </section>
+
+        <section class="section" id="json">
+            <h2>JSON Format 📋</h2>
+            <p>
+                <strong>JSON (JavaScript Object Notation)</strong> - API mein data exchange ka standard format hai. 
+                Ye human-readable hai aur har programming language mein parse ho sakta hai.
+            </p>
+
+            <div class="file-label">Java Object → JSON</div>
+            <pre><code><span class="comment">// Java Object</span>
+<span class="type">Student</span> student = <span class="keyword">new</span> <span class="type">Student</span>();
+student.<span class="function">setId</span>(<span class="number">1L</span>);
+student.<span class="function">setName</span>(<span class="string">"Rahul"</span>);
+student.<span class="function">setAge</span>(<span class="number">20</span>);
+student.<span class="function">setEmail</span>(<span class="string">"rahul@test.com"</span>);
+
+<span class="comment">// JSON Response (Automatic conversion by Spring Boot)</span>
+{
+    <span class="string">"id"</span>: <span class="number">1</span>,
+    <span class="string">"name"</span>: <span class="string">"Rahul"</span>,
+    <span class="string">"age"</span>: <span class="number">20</span>,
+    <span class="string">"email"</span>: <span class="string">"rahul@test.com"</span>
+}</code></pre>
+
+            <div class="file-label">JSON → Java Object (@RequestBody)</div>
+            <pre><code><span class="comment">// Client bhejega ye JSON:</span>
+{
+    <span class="string">"name"</span>: <span class="string">"Priya"</span>,
+    <span class="string">"age"</span>: <span class="number">22</span>,
+    <span class="string">"email"</span>: <span class="string">"priya@test.com"</span>
+}
+
+<span class="comment">// @RequestBody automatically isko Student object mein convert kar dega:</span>
+<span class="annotation">@PostMapping</span>
+<span class="keyword">public</span> <span class="type">Student</span> <span class="function">create</span>(<span class="annotation">@RequestBody</span> <span class="type">Student</span> student) {
+    <span class="comment">// student.getName() = "Priya"</span>
+    <span class="comment">// student.getAge() = 22</span>
+}</code></pre>
+        </section>
+
+        <!-- Layered Architecture -->
+        <section class="section" id="layered">
+            <h2>Layered Architecture 🏗️</h2>
+            <p>
+                Spring Boot mein code ko <strong>layers</strong> mein divide karte hain. Har layer ka apna kaam hota hai. 
+                Ye structure clean, maintainable aur testable code banata hai.
+            </p>
+
+            <pre style="text-align: center; font-size: 1.1rem;">
+┌─────────────────────────────────────────┐
+│         <strong>CLIENT</strong> (Browser/Postman)       │
+│    HTTP Request: GET /api/students      │
+└──────────────┬──────────────────────────┘
+               │ HTTP
+               ▼
+┌─────────────────────────────────────────┐
+│    📡 <strong>CONTROLLER LAYER</strong> (@RestController) │
+│    - HTTP requests handle karta hai     │
+│    - URL se data nikalta hai            │
+│    - Service ko call karta hai          │
+│    - JSON response return karta hai     │
+└──────────────┬──────────────────────────┘
+               │ Method Call
+               ▼
+┌─────────────────────────────────────────┐
+│    ⚙️ <strong>SERVICE LAYER</strong> (@Service)          │
+│    - Business logic likhte hain         │
+│    - Data validate karta hai            │
+│    - Repository ko call karta hai       │
+│    - Multiple repos combine kar sakta   │
+└──────────────┬──────────────────────────┘
+               │ Method Call
+               ▼
+┌─────────────────────────────────────────┐
+│    💾 <strong>REPOSITORY LAYER</strong> (@Repository)    │
+│    - Database se directly baat karta    │
+│    - CRUD operations handle karta hai   │
+│    - SQL queries likhne ki zaroorat     │
+│      nahi (JPA magic!)                  │
+└──────────────┬──────────────────────────┘
+               │ SQL
+               ▼
+┌─────────────────────────────────────────┐
+│    🗄️ <strong>DATABASE</strong> (H2/MySQL/PostgreSQL)   │
+│    - Data store karta hai               │
+│    - Tables mein data rakhta hai        │
+└─────────────────────────────────────────┘
+            </pre>
+
+            <div class="tip">
+                <div class="tip-title">💡 Flow Samajh</div>
+                <p>
+                    <strong>Request Flow:</strong> Client → Controller → Service → Repository → Database<br>
+                    <strong>Response Flow:</strong> Database → Repository → Service → Controller → Client
+                </p>
+            </div>
+        </section>
+
+        <!-- Controller Layer -->
+        <section class="section" id="controller">
+            <h2>Controller Layer 📡</h2>
+            <p>
+                Controller <strong>entry point</strong> hai. Ye HTTP requests pakadta hai, data nikalta hai, 
+                Service ko deta hai, aur response bhejta hai.
+            </p>
+
+            <div class="file-label">StudentController.java</div>
+            <pre><code><span class="annotation">@RestController</span>                          <span class="comment">// REST API controller hai</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/students"</span>)         <span class="comment">// Base URL path</span>
+<span class="keyword">public class</span> <span class="type">StudentController</span> {
+
+    <span class="keyword">private final</span> <span class="type">StudentService</span> studentService;
+    
+    <span class="comment">// Constructor Injection - Spring automatically object de dega</span>
+    <span class="keyword">public</span> <span class="function">StudentController</span>(<span class="type">StudentService</span> studentService) {
+        <span class="keyword">this</span>.studentService = studentService;
+    }
+
+    <span class="comment">// ========== CREATE ==========</span>
+    <span class="annotation">@PostMapping</span>
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">Student</span>&gt; <span class="function">createStudent</span>(<span class="annotation">@RequestBody</span> <span class="type">Student</span> student) {
+        <span class="type">Student</span> saved = studentService.<span class="function">save</span>(student);
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">ResponseEntity</span>&lt;&gt;(saved, HttpStatus.CREATED);  <span class="comment">// 201</span>
+    }
+
+    <span class="comment">// ========== READ ALL ==========</span>
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">List</span>&lt;<span class="type">Student</span>&gt;&gt; <span class="function">getAllStudents</span>() {
+        <span class="keyword">return</span> <span class="type">ResponseEntity</span>.<span class="function">ok</span>(studentService.<span class="function">findAll</span>());  <span class="comment">// 200</span>
+    }
+
+    <span class="comment">// ========== READ ONE ==========</span>
+    <span class="annotation">@GetMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">Student</span>&gt; <span class="function">getStudent</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) {
+        <span class="keyword">return</span> studentService.<span class="function">findById</span>(id)
+                .<span class="function">map</span>(student -> <span class="type">ResponseEntity</span>.<span class="function">ok</span>(student))   <span class="comment">// Found - 200</span>
+                .<span class="function">orElse</span>(<span class="type">ResponseEntity</span>.<span class="function">notFound</span>().<span class="function">build</span>());  <span class="comment">// Not Found - 404</span>
+    }
+
+    <span class="comment">// ========== UPDATE ==========</span>
+    <span class="annotation">@PutMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">Student</span>&gt; <span class="function">updateStudent</span>(
+            <span class="annotation">@PathVariable</span> <span class="type">Long</span> id,
+            <span class="annotation">@RequestBody</span> <span class="type">Student</span> student) {
+        student.<span class="function">setId</span>(id);
+        <span class="keyword">return</span> <span class="type">ResponseEntity</span>.<span class="function">ok</span>(studentService.<span class="function">save</span>(student));  <span class="comment">// 200</span>
+    }
+
+    <span class="comment">// ========== DELETE ==========</span>
+    <span class="annotation">@DeleteMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">Void</span>&gt; <span class="function">deleteStudent</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) {
+        studentService.<span class="function">deleteById</span>(id);
+        <span class="keyword">return</span> <span class="type">ResponseEntity</span>.<span class="function">noContent</span>().<span class="function">build</span>();  <span class="comment">// 204</span>
+    }
+}</code></pre>
+
+            <div class="note">
+                <div class="note-title">📌 Controller Ke Rules</div>
+                <ul>
+                    <li>Controller mein <strong>business logic nahi</strong> likhni - sirf request/response handling</li>
+                    <li>Controller Service ko call karega - Repository ko <strong>directly nahi</strong></li>
+                    <li>HTTP status codes proper return karo (200, 201, 404, etc.)</li>
+                    <li><code>@PathVariable</code> URL path se, <code>@RequestParam</code> query se, <code>@RequestBody</code> body se data lete hain</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Service Layer -->
+        <section class="section" id="service">
+            <h2>Service Layer ⚙️</h2>
+            <p>
+                Service layer mein <strong>business logic</strong> hoti hai. Ye controller se request leke, 
+                processing karta hai, aur repository ko database operation ke liye deta hai.
+            </p>
+
+            <div class="file-label">StudentService.java</div>
+            <pre><code><span class="annotation">@Service</span>  <span class="comment">// "Ye business logic ka layer hai"</span>
+<span class="keyword">public class</span> <span class="type">StudentService</span> {
+
+    <span class="keyword">private final</span> <span class="type">StudentRepository</span> studentRepository;
+    
+    <span class="comment">// Constructor Injection</span>
+    <span class="keyword">public</span> <span class="function">StudentService</span>(<span class="type">StudentRepository</span> studentRepository) {
+        <span class="keyword">this</span>.studentRepository = studentRepository;
+    }
+
+    <span class="comment">// ===== CRUD Operations =====</span>
+    
+    <span class="comment">// CREATE & UPDATE (donon ke liye same save method)</span>
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">save</span>(<span class="type">Student</span> student) {
+        <span class="comment">// Business logic - validation</span>
+        <span class="keyword">if</span> (student.<span class="function">getName</span>() == <span class="keyword">null</span> || student.<span class="function">getName</span>().<span class="function">trim</span>().<span class="function">isEmpty</span>()) {
+            <span class="keyword">throw new</span> <span class="type">IllegalArgumentException</span>(<span class="string">"Name cannot be empty!"</span>);
+        }
+        <span class="keyword">if</span> (student.<span class="function">getAge</span>() &lt; <span class="number">0</span> || student.<span class="function">getAge</span>() &gt; <span class="number">150</span>) {
+            <span class="keyword">throw new</span> <span class="type">IllegalArgumentException</span>(<span class="string">"Invalid age!"</span>);
+        }
+        <span class="keyword">return</span> studentRepository.<span class="function">save</span>(student);
+    }
+
+    <span class="comment">// READ ALL</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">findAll</span>() {
+        <span class="keyword">return</span> studentRepository.<span class="function">findAll</span>();
+    }
+
+    <span class="comment">// READ ONE</span>
+    <span class="keyword">public</span> <span class="type">Optional</span>&lt;<span class="type">Student</span>&gt; <span class="function">findById</span>(<span class="type">Long</span> id) {
+        <span class="keyword">return</span> studentRepository.<span class="function">findById</span>(id);
+    }
+
+    <span class="comment">// DELETE</span>
+    <span class="keyword">public void</span> <span class="function">deleteById</span>(<span class="type">Long</span> id) {
+        studentRepository.<span class="function">deleteById</span>(id);
+    }
+    
+    <span class="comment">// ===== Custom Business Logic =====</span>
+    
+    <span class="comment">// Name se search karna</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">findByName</span>(<span class="type">String</span> name) {
+        <span class="keyword">return</span> studentRepository.<span class="function">findByNameContainingIgnoreCase</span>(name);
+    }
+    
+    <span class="comment">// Age ke hisaab se filter</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">findByAgeGreaterThan</span>(<span class="type">int</span> age) {
+        <span class="keyword">return</span> studentRepository.<span class="function">findByAgeGreaterThan</span>(age);
+    }
+}</code></pre>
+
+            <div class="tip">
+                <div class="tip-title">💡 Service Layer Kyun Chahiye?</div>
+                <ul>
+                    <li><strong>Separation of Concerns</strong> - Controller sirf HTTP, Service sirf business logic</li>
+                    <li><strong>Reusability</strong> - Same service multiple controllers mein use kar sakte hain</li>
+                    <li><strong>Testing</strong> - Service ko alag se test kar sakte hain</li>
+                    <li><strong>Transactions</strong> - Database operations ko manage karne ke liye</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Repository Layer -->
+        <section class="section" id="repository">
+            <h2>Repository Layer 💾</h2>
+            <p>
+                Repository layer <strong>database se directly baat</strong> karti hai. Spring Data JPA ki magic se 
+                tujhe SQL queries likhne ki zaroorat nahi - sirf interface bana aur method ke naam se kaam ho jayega!
+            </p>
+
+            <div class="file-label">StudentRepository.java</div>
+            <pre><code><span class="annotation">@Repository</span>  <span class="comment">// "Ye database access layer hai"</span>
+<span class="keyword">public interface</span> <span class="type">StudentRepository</span> <span class="keyword">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Student</span>, <span class="type">Long</span>&gt; {
+    <span class="comment">/*
+     JpaRepository&lt;Student, Long&gt; ka matlab:
+     - Student = Entity class (kaunsi table)
+     - Long = Primary key ka type
+     
+     Extend karne se ye methods FREE mein milte hain:
+     
+     save(Student)           → Save/Update
+     findAll()               → Sab records
+     findById(Long)          → ID se search
+     deleteById(Long)        → ID se delete
+     count()                 → Total records
+     existsById(Long)        → Check karna
+    */</span>
+    
+    <span class="comment">// ===== CUSTOM METHODS (Spring Data JPA Magic!) =====</span>
+    <span class="comment">// Method ka naam likho - Spring automatically query bana dega!</span>
+    
+    <span class="comment">// Name se search (exact match)</span>
+    <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">findByName</span>(<span class="type">String</span> name);
+    
+    <span class="comment">// Name mein substring search (case insensitive)</span>
+    <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">findByNameContainingIgnoreCase</span>(<span class="type">String</span> name);
+    
+    <span class="comment">// Age se filter</span>
+    <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">findByAgeGreaterThan</span>(<span class="type">int</span> age);
+    
+    <span class="comment">// Age range mein search</span>
+    <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">findByAgeBetween</span>(<span class="type">int</span> minAge, <span class="type">int</span> maxAge);
+    
+    <span class="comment">// Email se search</span>
+    <span class="type">Optional</span>&lt;<span class="type">Student</span>&gt; <span class="function">findByEmail</span>(<span class="type">String</span> email);
+}</code></pre>
+
+            <div class="remember">
+                <div class="remember-title">🧠 JPA Naming Convention - Ye Magic Hai!</div>
+                <p>Spring Data JPA method ke naam se <strong>automatic SQL query</strong> generate karta hai:</p>
+                <table>
+                    <tr><th>Method Name</th><th>Generated SQL (approximately)</th></tr>
+                    <tr><td><code>findByName</code></td><td><code>SELECT * FROM students WHERE name = ?</code></td></tr>
+                    <tr><td><code>findByNameContaining</code></td><td><code>SELECT * FROM students WHERE name LIKE '%?%'</code></td></tr>
+                    <tr><td><code>findByAgeGreaterThan</code></td><td><code>SELECT * FROM students WHERE age > ?</code></td></tr>
+                    <tr><td><code>findByAgeBetween</code></td><td><code>SELECT * FROM students WHERE age BETWEEN ? AND ?</code></td></tr>
+                    <tr><td><code>findByNameAndAge</code></td><td><code>SELECT * FROM students WHERE name = ? AND age = ?</code></td></tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- JPA & Database -->
+        <section class="section" id="jpa-intro">
+            <h2>JPA & Hibernate 🗄️</h2>
+            <p>
+                <strong>JPA (Java Persistence API)</strong> ek standard hai jo Java objects ko database tables se 
+                map karne ka tarika batata hai. <strong>Hibernate</strong> is JPA ka implementation hai jo 
+                actually ye kaam karta hai.
+            </p>
+
+            <div class="note">
+                <div class="note-title">📌 Simple Samajh</div>
+                <p>
+                    JPA = Rules/Standard (interface)<br>
+                    Hibernate = Rules follow karne wala (implementation)<br><br>
+                    Tu JPA annotations use karta hai → Hibernate unhe padhta hai → Database mein SQL queries chalata hai
+                </p>
+            </div>
+
+            <h3>Kaam Kaise Karta Hai?</h3>
+            <ol>
+                <li>Tu Java class banata hai aur <code>@Entity</code> lagata hai</li>
+                <li>Class ke variables pe <code>@Column</code> lagata hai</li>
+                <li>Hibernate automatically database table bana deta hai</li>
+                <li>Tu Java objects se kaam karta hai - SQL likhne ki zaroorat nahi!</li>
+            </ol>
+        </section>
+
+        <section class="section" id="entities">
+            <h2>Entity Class Banana 👤</h2>
+            <p>
+                Entity class ek <strong>Java class</strong> hai jo database table se map hoti hai. 
+                Har entity object ek <strong>table row</strong> represent karta hai.
+            </p>
+
+            <div class="file-label">Student.java (Entity Class)</div>
+            <pre><code><span class="keyword">package</span> com.bitsandbytes.studentapi.model;
+
+<span class="keyword">import</span> jakarta.persistence.*;  <span class="comment">// JPA annotations</span>
+
+<span class="annotation">@Entity</span>                     <span class="comment">// Ye class ek database table hai</span>
+<span class="annotation">@Table</span>(name = <span class="string">"students"</span>)   <span class="comment">// Table ka naam</span>
+<span class="keyword">public class</span> <span class="type">Student</span> {
+
+    <span class="annotation">@Id</span>                                             <span class="comment">// Primary key</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)  <span class="comment">// Auto increment</span>
+    <span class="keyword">private</span> <span class="type">Long</span> id;
+
+    <span class="annotation">@Column</span>(name = <span class="string">"student_name"</span>, nullable = <span class="keyword">false</span>, length = <span class="number">100</span>)
+    <span class="keyword">private</span> <span class="type">String</span> name;
+
+    <span class="annotation">@Column</span>(nullable = <span class="keyword">false</span>)
+    <span class="keyword">private</span> <span class="type">int</span> age;
+
+    <span class="annotation">@Column</span>(unique = <span class="keyword">true</span>)  <span class="comment">// Duplicate email nahi hone chahiye</span>
+    <span class="keyword">private</span> <span class="type">String</span> email;
+
+    <span class="comment">// ===== CONSTRUCTORS =====</span>
+    
+    <span class="comment">// Default constructor (JPA ke liye zaroori hai!)</span>
+    <span class="keyword">public</span> <span class="function">Student</span>() {}
+
+    <span class="comment">// Parameterized constructor</span>
+    <span class="keyword">public</span> <span class="function">Student</span>(<span class="type">String</span> name, <span class="type">int</span> age, <span class="type">String</span> email) {
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.age = age;
+        <span class="keyword">this</span>.email = email;
+    }
+
+    <span class="comment">// ===== GETTERS & SETTERS =====</span>
+    <span class="comment">/* Ye zaroori hain kyunki:</span>
+<span class="comment">       - JPA values set/get karta hai in methods se</span>
+<span class="comment">       - JSON serialization/deserialization ke liye chahiye</span>
+<span class="comment">    */</span>
+    
+    <span class="keyword">public</span> <span class="type">Long</span> <span class="function">getId</span>() { <span class="keyword">return</span> id; }
+    <span class="keyword">public void</span> <span class="function">setId</span>(<span class="type">Long</span> id) { <span class="keyword">this</span>.id = id; }
+
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">getName</span>() { <span class="keyword">return</span> name; }
+    <span class="keyword">public void</span> <span class="function">setName</span>(<span class="type">String</span> name) { <span class="keyword">this</span>.name = name; }
+
+    <span class="keyword">public int</span> <span class="function">getAge</span>() { <span class="keyword">return</span> age; }
+    <span class="keyword">public void</span> <span class="function">setAge</span>(<span class="type">int</span> age) { <span class="keyword">this</span>.age = age; }
+
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">getEmail</span>() { <span class="keyword">return</span> email; }
+    <span class="keyword">public void</span> <span class="function">setEmail</span>(<span class="type">String</span> email) { <span class="keyword">this</span>.email = email; }
+
+    <span class="comment">// ===== toString() =====</span>
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">toString</span>() {
+        <span class="keyword">return</span> <span class="string">"Student{"</span> +
+                <span class="string">"id="</span> + id +
+                <span class="string">", name='"</span> + name + <span class="string">'\''</span> +
+                <span class="string">", age="</span> + age +
+                <span class="string">", email='"</span> + email + <span class="string">'\''</span> +
+                <span class="string">'}'</span>;
+    }
+}</code></pre>
+
+            <div class="file-label">Entity Annotations Explained</div>
+            <table>
+                <tr><th>Annotation</th><th>Attributes</th><th>Kya Karega?</th></tr>
+                <tr>
+                    <td><code>@Entity</code></td>
+                    <td>-</td>
+                    <td>Class ko database table mark karega</td>
+                </tr>
+                <tr>
+                    <td><code>@Table</code></td>
+                    <td><code>name</code></td>
+                    <td>Table ka naam customize karega</td>
+                </tr>
+                <tr>
+                    <td><code>@Id</code></td>
+                    <td>-</td>
+                    <td>Primary key column mark karega</td>
+                </tr>
+                <tr>
+                    <td><code>@GeneratedValue</code></td>
+                    <td><code>strategy</code></td>
+                    <td>ID auto-generate karega (IDENTITY = auto-increment)</td>
+                </tr>
+                <tr>
+                    <td><code>@Column</code></td>
+                    <td><code>name, nullable, length, unique</code></td>
+                    <td>Column properties set karega</td>
+                </tr>
+            </table>
+
+            <div class="warning">
+                <div class="warning-title">⚠️ Important Rules</div>
+                <ul>
+                    <li>Entity class mein <strong>default constructor</strong> hona chahiye (JPA use karta hai)</li>
+                    <li><code>@Id</code> field honi chahiye - ye primary key hai</li>
+                    <li>Getters aur Setters hone chahiye - JPA inka use karta hai</li>
+                    <li>Class <code>final</code> nahi honi chahiye</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="crud">
+            <h2>CRUD Operations 💻</h2>
+            <p>
+                CRUD = <strong>C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete. 
+                Ye 4 operations database mein sabse zyada use hote hain. Spring Data JPA se ye bahut asaan ho jate hain.
+            </p>
+
+            <h3>Repository Interface (CRUD ke liye)</h3>
+            <div class="file-label">StudentRepository.java</div>
+            <pre><code><span class="annotation">@Repository</span>
+<span class="keyword">public interface</span> <span class="type">StudentRepository</span> <span class="keyword">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Student</span>, <span class="type">Long</span>&gt; {
+    <span class="comment">// Bas itna likho - CRUD methods FREE mein!</span>
+}</code></pre>
+
+            <h3>JpaRepository Ke Ready-made Methods</h3>
+            <table>
+                <tr><th>Operation</th><th>Method</th><th>Example</th></tr>
+                <tr><td>CREATE</td><td><code>save(entity)</code></td><td><code>repo.save(student)</code></td></tr>
+                <tr><td>READ ALL</td><td><code>findAll()</code></td><td><code>repo.findAll()</code></td></tr>
+                <tr><td>READ ONE</td><td><code>findById(id)</code></td><td><code>repo.findById(1L)</code></td></tr>
+                <tr><td>UPDATE</td><td><code>save(entity)</code></td><td><code>repo.save(existingStudent)</code></td></tr>
+                <tr><td>DELETE</td><td><code>deleteById(id)</code></td><td><code>repo.deleteById(1L)</code></td></tr>
+                <tr><td>COUNT</td><td><code>count()</code></td><td><code>repo.count()</code></td></tr>
+                <tr><td>EXISTS</td><td><code>existsById(id)</code></td><td><code>repo.existsById(1L)</code></td></tr>
+            </table>
+
+            <div class="tip">
+                <div class="tip-title">💡 Create aur Update - Same Method!</div>
+                <p>
+                    <code>save()</code> method smart hai: Agar entity ka <code>id</code> <strong>null</strong> hai toh 
+                    <strong>INSERT</strong> (create) karega. Agar <code>id</code> set hai toh <strong>UPDATE</strong> karega.
+                </p>
+            </div>
+        </section>
+
+        <!-- Complete Project -->
+        <section class="section" id="project-overview">
+            <h2>Complete Project: Student Management System 🎓</h2>
+            <p>
+                Ab ek <strong>complete working project</strong> banate hain - <strong>Student Management System</strong>. 
+                Ismein students ko add, view, update aur delete karne ke APIs honge. 
+                Ye tere GitHub repo ke structure ko extend karke banayenge.
+            </p>
+
+            <h3>Features</h3>
+            <ul>
+                <li>✅ Naya student add karna (CREATE)</li>
+                <li>✅ Sab students dekhna (READ ALL)</li>
+                <li>✅ Ek student ka detail dekhna (READ ONE)</li>
+                <li>✅ Student update karna (UPDATE)</li>
+                <li>✅ Student delete karna (DELETE)</li>
+                <li>✅ Name se search karna</li>
+                <li>✅ Proper error handling</li>
+            </ul>
+
+            <h3>Technologies</h3>
+            <ul>
+                <li>Spring Boot 3.x</li>
+                <li>Spring Data JPA</li>
+                <li>H2 Database (in-memory)</li>
+                <li>Maven</li>
+            </ul>
+        </section>
+
+        <section class="section" id="project-step1">
+            <h2>Step 1: Project Setup & Configuration ⚙️</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <h4>spring.io/start se project generate karo</h4>
+                <p>
+                    <a href="https://start.spring.io">https://start.spring.io</a> pe jaake ye settings daal:
+                </p>
+                <ul>
+                    <li>Project: <strong>Maven</strong></li>
+                    <li>Language: <strong>Java</strong></li>
+                    <li>Spring Boot: <strong>3.5.5</strong></li>
+                    <li>Group: <strong>com.bitsandbytes</strong></li>
+                    <li>Artifact: <strong>studentapi</strong></li>
+                    <li>Java: <strong>17+</strong></li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <h4>Dependencies add karo</h4>
+                <ul>
+                    <li>Spring Web</li>
+                    <li>Spring Data JPA</li>
+                    <li>H2 Database</li>
+                    <li>Lombok (optional - code kam karne ke liye)</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <h4>application.properties configure karo</h4>
+                <div class="file-label">src/main/resources/application.properties</div>
+                <pre><code><span class="comment"># Application name</span>
+spring.application.name=studentapi
+
+<span class="comment"># Server port (default 8080)</span>
+server.port=8080
+
+<span class="comment"># H2 Database Configuration</span>
+spring.datasource.url=jdbc:h2:mem:studentdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+<span class="comment"># JPA / Hibernate</span>
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
+
+<span class="comment"># H2 Console (browser mein database dekhne ke liye)</span>
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+<span class="comment"># SQL queries console pe dikhane ke liye (development ke liye)</span>
+spring.jpa.show-sql=true</code></pre>
+            </div>
+
+            <div class="note">
+                <div class="note-title">📌 Configuration Explained</div>
+                <ul>
+                    <li><code>spring.datasource.url=jdbc:h2:mem:studentdb</code> - H2 in-memory database, <code>studentdb</code> naam se</li>
+                    <li><code>ddl-auto=update</code> - Hibernate automatically tables create/update karega</li>
+                    <li><code>h2.console.enabled=true</code> - Browser mein <code>http://localhost:8080/h2-console</code> se DB dekh sakte hain</li>
+                    <li><code>show-sql=true</code> - Console pe SQL queries dikhayega (debugging ke liye)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="project-step2">
+            <h2>Step 2: Model/Entity Class Banana 👤</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <h4>Package & Folder Structure</h4>
+                <div class="tree">
+<span class="folder">src/main/java/com/bitsandbytes/studentapi/</span>
+├── <span class="file">StudentapiApplication.java</span>
+└── <span class="folder">model/</span>
+    └── <span class="file">Student.java</span>    <span class="comment">&lt;-- Ab ye banayenge</span></div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <h4>Student Entity Class</h4>
+                <div class="file-label">model/Student.java</div>
+                <pre><code><span class="keyword">package</span> com.bitsandbytes.studentapi.model;
+
+<span class="keyword">import</span> jakarta.persistence.*;
+
+<span class="annotation">@Entity</span>
+<span class="annotation">@Table</span>(name = <span class="string">"students"</span>)
+<span class="keyword">public class</span> <span class="type">Student</span> {
+
+    <span class="annotation">@Id</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+    <span class="keyword">private</span> <span class="type">Long</span> id;
+
+    <span class="annotation">@Column</span>(nullable = <span class="keyword">false</span>)
+    <span class="keyword">private</span> <span class="type">String</span> name;
+
+    <span class="annotation">@Column</span>(nullable = <span class="keyword">false</span>)
+    <span class="keyword">private</span> <span class="type">int</span> age;
+
+    <span class="annotation">@Column</span>(unique = <span class="keyword">true</span>)
+    <span class="keyword">private</span> <span class="type">String</span> email;
+
+    <span class="comment">// Default constructor</span>
+    <span class="keyword">public</span> <span class="function">Student</span>() {}
+
+    <span class="comment">// Constructor with fields</span>
+    <span class="keyword">public</span> <span class="function">Student</span>(<span class="type">String</span> name, <span class="type">int</span> age, <span class="type">String</span> email) {
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.age = age;
+        <span class="keyword">this</span>.email = email;
+    }
+
+    <span class="comment">// Getters and Setters</span>
+    <span class="keyword">public</span> <span class="type">Long</span> <span class="function">getId</span>() { <span class="keyword">return</span> id; }
+    <span class="keyword">public void</span> <span class="function">setId</span>(<span class="type">Long</span> id) { <span class="keyword">this</span>.id = id; }
+
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">getName</span>() { <span class="keyword">return</span> name; }
+    <span class="keyword">public void</span> <span class="function">setName</span>(<span class="type">String</span> name) { <span class="keyword">this</span>.name = name; }
+
+    <span class="keyword">public int</span> <span class="function">getAge</span>() { <span class="keyword">return</span> age; }
+    <span class="keyword">public void</span> <span class="function">setAge</span>(<span class="type">int</span> age) { <span class="keyword">this</span>.age = age; }
+
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">getEmail</span>() { <span class="keyword">return</span> email; }
+    <span class="keyword">public void</span> <span class="function">setEmail</span>(<span class="type">String</span> email) { <span class="keyword">this</span>.email = email; }
+}</code></pre>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">💡 Lombok Use Karke Code Kam Karna</div>
+                <p>agar Lombok dependency add ki hai toh ye same class itni chhoti ban sakti hai:</p>
+                <pre><code><span class="keyword">package</span> com.bitsandbytes.studentapi.model;
+
+<span class="keyword">import</span> jakarta.persistence.*;
+<span class="keyword">import</span> lombok.*;
+
+<span class="annotation">@Entity</span>
+<span class="annotation">@Table</span>(name = <span class="string">"students"</span>)
+<span class="annotation">@Data</span>              <span class="comment">// = @Getter + @Setter + @ToString + @EqualsAndHashCode</span>
+<span class="annotation">@NoArgsConstructor</span>  <span class="comment">// Default constructor</span>
+<span class="annotation">@AllArgsConstructor</span> <span class="comment">// Parameterized constructor</span>
+<span class="keyword">public class</span> <span class="type">Student</span> {
+
+    <span class="annotation">@Id</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+    <span class="keyword">private</span> <span class="type">Long</span> id;
+
+    <span class="annotation">@Column</span>(nullable = <span class="keyword">false</span>)
+    <span class="keyword">private</span> <span class="type">String</span> name;
+
+    <span class="annotation">@Column</span>(nullable = <span class="keyword">false</span>)
+    <span class="keyword">private</span> <span class="type">int</span> age;
+
+    <span class="annotation">@Column</span>(unique = <span class="keyword">true</span>)
+    <span class="keyword">private</span> <span class="type">String</span> email;
+}</code></pre>
+            </div>
+        </section>
+
+        <section class="section" id="project-step3">
+            <h2>Step 3: Repository Interface Banana 💾</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <h4>Folder Structure</h4>
+                <div class="tree">
+<span class="folder">src/main/java/com/bitsandbytes/studentapi/</span>
+├── ...
+└── <span class="folder">repository/</span>           <span class="comment">&lt;-- Naya folder</span>
+    └── <span class="file">StudentRepository.java</span>  <span class="comment">&lt;-- Ab ye banayenge</span></div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <h4>StudentRepository Interface</h4>
+                <div class="file-label">repository/StudentRepository.java</div>
+                <pre><code><span class="keyword">package</span> com.bitsandbytes.studentapi.repository;
+
+<span class="keyword">import</span> com.bitsandbytes.studentapi.model.Student;
+<span class="keyword">import</span> org.springframework.data.jpa.repository.JpaRepository;
+<span class="keyword">import</span> org.springframework.stereotype.Repository;
+
+<span class="keyword">import</span> java.util.List;
+
+<span class="annotation">@Repository</span>
+<span class="keyword">public interface</span> <span class="type">StudentRepository</span> <span class="keyword">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Student</span>, <span class="type">Long</span>&gt; {
+
+    <span class="comment">// ===== CUSTOM SEARCH METHODS =====</span>
+    <span class="comment">// Spring Data JPA automatically inke liye queries bana dega!</span>
+
+    <span class="comment">// Name mein search (case insensitive)</span>
+    <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">findByNameContainingIgnoreCase</span>(<span class="type">String</span> name);
+
+    <span class="comment">// Age ke hisaab se filter</span>
+    <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">findByAgeGreaterThan</span>(<span class="type">int</span> age);
+
+    <span class="comment">// Email se search</span>
+    <span class="type">Student</span> <span class="function">findByEmail</span>(<span class="type">String</span> email);
+}</code></pre>
+            </div>
+
+            <div class="remember">
+                <div class="remember-title">🧠 Important!</div>
+                <p>
+                    Repository <strong>interface</strong> hai, class nahi! <code>JpaRepository</code> extend karne se 
+                    Spring automatically iska implementation bana deta hai. Tujhe koi SQL nahi likhna!
+                </p>
+            </div>
+        </section>
+
+        <section class="section" id="project-step4">
+            <h2>Step 4: Service Layer Banana ⚙️</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <h4>Folder Structure</h4>
+                <div class="tree">
+<span class="folder">src/main/java/com/bitsandbytes/studentapi/</span>
+├── ...
+└── <span class="folder">service/</span>              <span class="comment">&lt;-- Naya folder</span>
+    └── <span class="file">StudentService.java</span>   <span class="comment">&lt;-- Ab ye banayenge</span></div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <h4>StudentService Class</h4>
+                <div class="file-label">service/StudentService.java</div>
+                <pre><code><span class="keyword">package</span> com.bitsandbytes.studentapi.service;
+
+<span class="keyword">import</span> com.bitsandbytes.studentapi.model.Student;
+<span class="keyword">import</span> com.bitsandbytes.studentapi.repository.StudentRepository;
+<span class="keyword">import</span> org.springframework.stereotype.Service;
+
+<span class="keyword">import</span> java.util.List;
+<span class="keyword">import</span> java.util.Optional;
+
+<span class="annotation">@Service</span>
+<span class="keyword">public class</span> <span class="type">StudentService</span> {
+
+    <span class="keyword">private final</span> <span class="type">StudentRepository</span> studentRepository;
+
+    <span class="comment">// Constructor Injection - Spring automatically object de dega</span>
+    <span class="keyword">public</span> <span class="function">StudentService</span>(<span class="type">StudentRepository</span> studentRepository) {
+        <span class="keyword">this</span>.studentRepository = studentRepository;
+    }
+
+    <span class="comment">// ===== CREATE =====</span>
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">createStudent</span>(<span class="type">Student</span> student) {
+        <span class="comment">// Validation</span>
+        <span class="keyword">if</span> (student.<span class="function">getName</span>() == <span class="keyword">null</span> || student.<span class="function">getName</span>().<span class="function">trim</span>().<span class="function">isEmpty</span>()) {
+            <span class="keyword">throw new</span> <span class="type">IllegalArgumentException</span>(<span class="string">"Name is required!"</span>);
+        }
+        <span class="keyword">if</span> (student.<span class="function">getAge</span>() &lt;= <span class="number">0</span>) {
+            <span class="keyword">throw new</span> <span class="type">IllegalArgumentException</span>(<span class="string">"Age must be positive!"</span>);
+        }
+        <span class="keyword">return</span> studentRepository.<span class="function">save</span>(student);
+    }
+
+    <span class="comment">// ===== READ ALL =====</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">getAllStudents</span>() {
+        <span class="keyword">return</span> studentRepository.<span class="function">findAll</span>();
+    }
+
+    <span class="comment">// ===== READ ONE =====</span>
+    <span class="keyword">public</span> <span class="type">Optional</span>&lt;<span class="type">Student</span>&gt; <span class="function">getStudentById</span>(<span class="type">Long</span> id) {
+        <span class="keyword">return</span> studentRepository.<span class="function">findById</span>(id);
+    }
+
+    <span class="comment">// ===== UPDATE =====</span>
+    <span class="keyword">public</span> <span class="type">Student</span> <span class="function">updateStudent</span>(<span class="type">Long</span> id, <span class="type">Student</span> studentDetails) {
+        <span class="type">Student</span> student = studentRepository.<span class="function">findById</span>(id)
+                .<span class="function">orElseThrow</span>(() -> <span class="keyword">new</span> <span class="type">RuntimeException</span>(<span class="string">"Student not found with id: "</span> + id));
+
+        student.<span class="function">setName</span>(studentDetails.<span class="function">getName</span>());
+        student.<span class="function">setAge</span>(studentDetails.<span class="function">getAge</span>());
+        student.<span class="function">setEmail</span>(studentDetails.<span class="function">getEmail</span>());
+
+        <span class="keyword">return</span> studentRepository.<span class="function">save</span>(student);
+    }
+
+    <span class="comment">// ===== DELETE =====</span>
+    <span class="keyword">public void</span> <span class="function">deleteStudent</span>(<span class="type">Long</span> id) {
+        <span class="type">Student</span> student = studentRepository.<span class="function">findById</span>(id)
+                .<span class="function">orElseThrow</span>(() -> <span class="keyword">new</span> <span class="type">RuntimeException</span>(<span class="string">"Student not found with id: "</span> + id));
+        studentRepository.<span class="function">delete</span>(student);
+    }
+
+    <span class="comment">// ===== SEARCH =====</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Student</span>&gt; <span class="function">searchByName</span>(<span class="type">String</span> name) {
+        <span class="keyword">return</span> studentRepository.<span class="function">findByNameContainingIgnoreCase</span>(name);
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <section class="section" id="project-step5">
+            <h2>Step 5: Controller Layer Banana 📡</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <h4>Folder Structure</h4>
+                <div class="tree">
+<span class="folder">src/main/java/com/bitsandbytes/studentapi/</span>
+├── ...
+└── <span class="folder">controller/</span>           <span class="comment">&lt;-- Naya folder</span>
+    └── <span class="file">StudentController.java</span>  <span class="comment">&lt;-- Ab ye banayenge</span></div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <h4>StudentController Class</h4>
+                <div class="file-label">controller/StudentController.java</div>
+                <pre><code><span class="keyword">package</span> com.bitsandbytes.studentapi.controller;
+
+<span class="keyword">import</span> com.bitsandbytes.studentapi.model.Student;
+<span class="keyword">import</span> com.bitsandbytes.studentapi.service.StudentService;
+<span class="keyword">import</span> org.springframework.http.HttpStatus;
+<span class="keyword">import</span> org.springframework.http.ResponseEntity;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.*;
+
+<span class="keyword">import</span> java.util.List;
+
+<span class="annotation">@RestController</span>                          <span class="comment">// REST API controller</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/students"</span>)         <span class="comment">// Base URL path</span>
+<span class="keyword">public class</span> <span class="type">StudentController</span> {
+
+    <span class="keyword">private final</span> <span class="type">StudentService</span> studentService;
+
+    <span class="comment">// Constructor Injection</span>
+    <span class="keyword">public</span> <span class="function">StudentController</span>(<span class="type">StudentService</span> studentService) {
+        <span class="keyword">this</span>.studentService = studentService;
+    }
+
+    <span class="comment">// ============================================</span>
+    <span class="comment">// CREATE - Naya student add karna</span>
+    <span class="comment">// POST http://localhost:8080/api/students</span>
+    <span class="comment">// Body: {"name":"Rahul","age":20,"email":"rahul@test.com"}</span>
+    <span class="comment">// ============================================</span>
+    <span class="annotation">@PostMapping</span>
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">Student</span>&gt; <span class="function">createStudent</span>(<span class="annotation">@RequestBody</span> <span class="type">Student</span> student) {
+        <span class="type">Student</span> createdStudent = studentService.<span class="function">createStudent</span>(student);
+        <span class="keyword">return new</span> <span class="type">ResponseEntity</span>&lt;&gt;(createdStudent, HttpStatus.CREATED);  <span class="comment">// 201</span>
+    }
+
+    <span class="comment">// ============================================</span>
+    <span class="comment">// READ ALL - Sab students dekhna</span>
+    <span class="comment">// GET http://localhost:8080/api/students</span>
+    <span class="comment">// ============================================</span>
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">List</span>&lt;<span class="type">Student</span>&gt;&gt; <span class="function">getAllStudents</span>() {
+        <span class="type">List</span>&lt;<span class="type">Student</span>&gt; students = studentService.<span class="function">getAllStudents</span>();
+        <span class="keyword">return</span> <span class="type">ResponseEntity</span>.<span class="function">ok</span>(students);  <span class="comment">// 200</span>
+    }
+
+    <span class="comment">// ============================================</span>
+    <span class="comment">// READ ONE - Ek student ka detail</span>
+    <span class="comment">// GET http://localhost:8080/api/students/1</span>
+    <span class="comment">// ============================================</span>
+    <span class="annotation">@GetMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">Student</span>&gt; <span class="function">getStudentById</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) {
+        <span class="keyword">return</span> studentService.<span class="function">getStudentById</span>(id)
+                .<span class="function">map</span>(student -> <span class="type">ResponseEntity</span>.<span class="function">ok</span>(student))           <span class="comment">// 200</span>
+                .<span class="function">orElse</span>(<span class="type">ResponseEntity</span>.<span class="function">notFound</span>().<span class="function">build</span>());        <span class="comment">// 404</span>
+    }
+
+    <span class="comment">// ============================================</span>
+    <span class="comment">// UPDATE - Student update karna</span>
+    <span class="comment">// PUT http://localhost:8080/api/students/1</span>
+    <span class="comment">// Body: {"name":"Rahul Kumar","age":21,"email":"rahul@new.com"}</span>
+    <span class="comment">// ============================================</span>
+    <span class="annotation">@PutMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">Student</span>&gt; <span class="function">updateStudent</span>(
+            <span class="annotation">@PathVariable</span> <span class="type">Long</span> id,
+            <span class="annotation">@RequestBody</span> <span class="type">Student</span> student) {
+        <span class="type">Student</span> updatedStudent = studentService.<span class="function">updateStudent</span>(id, student);
+        <span class="keyword">return</span> <span class="type">ResponseEntity</span>.<span class="function">ok</span>(updatedStudent);  <span class="comment">// 200</span>
+    }
+
+    <span class="comment">// ============================================</span>
+    <span class="comment">// DELETE - Student delete karna</span>
+    <span class="comment">// DELETE http://localhost:8080/api/students/1</span>
+    <span class="comment">// ============================================</span>
+    <span class="annotation">@DeleteMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">Void</span>&gt; <span class="function">deleteStudent</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) {
+        studentService.<span class="function">deleteStudent</span>(id);
+        <span class="keyword">return</span> <span class="type">ResponseEntity</span>.<span class="function">noContent</span>().<span class="function">build</span>();  <span class="comment">// 204</span>
+    }
+
+    <span class="comment">// ============================================</span>
+    <span class="comment">// SEARCH - Name se search karna</span>
+    <span class="comment">// GET http://localhost:8080/api/students/search?name=Rahul</span>
+    <span class="comment">// ============================================</span>
+    <span class="annotation">@GetMapping</span>(<span class="string">"/search"</span>)
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">List</span>&lt;<span class="type">Student</span>&gt;&gt; <span class="function">searchStudents</span>(<span class="annotation">@RequestParam</span> <span class="type">String</span> name) {
+        <span class="type">List</span>&lt;<span class="type">Student</span>&gt; students = studentService.<span class="function">searchByName</span>(name);
+        <span class="keyword">return</span> <span class="type">ResponseEntity</span>.<span class="function">ok</span>(students);  <span class="comment">// 200</span>
+    }
+}</code></pre>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">💡 @PathVariable vs @RequestParam</div>
+                <table>
+                    <tr><th>Annotation</th><th>URL Format</th><th>Example</th></tr>
+                    <tr><td><code>@PathVariable</code></td><td>URL path mein value</td><td><code>/students/<strong>5</strong></code> → id=5</td></tr>
+                    <tr><td><code>@RequestParam</code></td><td>URL query mein value</td><td><code>/search?<strong>name=Rahul</strong></code> → name="Rahul"</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <section class="section" id="project-step6">
+            <h2>Step 6: Global Exception Handler ⚠️</h2>
+            <p>
+                Ab ek exception handler banate hain taaki errors user ko acchi tarah dikhein, 
+                instead of ugly stack trace.
+            </p>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <h4>Folder Structure</h4>
+                <div class="tree">
+<span class="folder">src/main/java/com/bitsandbytes/studentapi/</span>
+├── ...
+└── <span class="folder">exception/</span>            <span class="comment">&lt;-- Naya folder</span>
+    ├── <span class="file">ErrorResponse.java</span>    <span class="comment">&lt;-- Error response ka format</span>
+    └── <span class="file">GlobalExceptionHandler.java</span>  <span class="comment">&lt;-- Exception handler</span></div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <h4>ErrorResponse Class</h4>
+                <div class="file-label">exception/ErrorResponse.java</div>
+                <pre><code><span class="keyword">package</span> com.bitsandbytes.studentapi.exception;
+
+<span class="keyword">import</span> java.time.LocalDateTime;
+
+<span class="comment">// Ye class error response ka format define karti hai</span>
+<span class="comment">// Jab error aayegi toh ye format mein response jayega</span>
+<span class="keyword">public class</span> <span class="type">ErrorResponse</span> {
+    <span class="keyword">private int</span> status;
+    <span class="keyword">private</span> <span class="type">String</span> message;
+    <span class="keyword">private</span> <span class="type">LocalDateTime</span> timestamp;
+
+    <span class="keyword">public</span> <span class="function">ErrorResponse</span>(<span class="type">int</span> status, <span class="type">String</span> message) {
+        <span class="keyword">this</span>.status = status;
+        <span class="keyword">this</span>.message = message;
+        <span class="keyword">this</span>.timestamp = LocalDateTime.<span class="function">now</span>();
+    }
+
+    <span class="comment">// Getters</span>
+    <span class="keyword">public int</span> <span class="function">getStatus</span>() { <span class="keyword">return</span> status; }
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">getMessage</span>() { <span class="keyword">return</span> message; }
+    <span class="keyword">public</span> <span class="type">LocalDateTime</span> <span class="function">getTimestamp</span>() { <span class="keyword">return</span> timestamp; }
+}</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <h4>GlobalExceptionHandler Class</h4>
+                <div class="file-label">exception/GlobalExceptionHandler.java</div>
+                <pre><code><span class="keyword">package</span> com.bitsandbytes.studentapi.exception;
+
+<span class="keyword">import</span> org.springframework.http.HttpStatus;
+<span class="keyword">import</span> org.springframework.http.ResponseEntity;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.ExceptionHandler;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.RestControllerAdvice;
+
+<span class="comment">/*
+ * @RestControllerAdvice = Ye class puri application ke exceptions handle karegi
+ * Har controller mein alag se try-catch nahi likhna padega!
+ */</span>
+<span class="annotation">@RestControllerAdvice</span>
+<span class="keyword">public class</span> <span class="type">GlobalExceptionHandler</span> {
+
+    <span class="comment">// Jab bhi IllegalArgumentException aayegi, ye method chalega</span>
+    <span class="annotation">@ExceptionHandler</span>(<span class="type">IllegalArgumentException</span>.<span class="keyword">class</span>)
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">ErrorResponse</span>&gt; <span class="function">handleIllegalArgument</span>(<span class="type">IllegalArgumentException</span> ex) {
+        <span class="type">ErrorResponse</span> error = <span class="keyword">new</span> <span class="type">ErrorResponse</span>(HttpStatus.BAD_REQUEST.value(), ex.<span class="function">getMessage</span>());
+        <span class="keyword">return new</span> <span class="type">ResponseEntity</span>&lt;&gt;(error, HttpStatus.BAD_REQUEST);  <span class="comment">// 400</span>
+    }
+
+    <span class="comment">// Jab bhi RuntimeException aayegi (jaise "Student not found")</span>
+    <span class="annotation">@ExceptionHandler</span>(<span class="type">RuntimeException</span>.<span class="keyword">class</span>)
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">ErrorResponse</span>&gt; <span class="function">handleRuntimeException</span>(<span class="type">RuntimeException</span> ex) {
+        <span class="type">ErrorResponse</span> error = <span class="keyword">new</span> <span class="type">ErrorResponse</span>(HttpStatus.NOT_FOUND.value(), ex.<span class="function">getMessage</span>());
+        <span class="keyword">return new</span> <span class="type">ResponseEntity</span>&lt;&gt;(error, HttpStatus.NOT_FOUND);  <span class="comment">// 404</span>
+    }
+
+    <span class="comment">// General Exception - koi aur unexpected error</span>
+    <span class="annotation">@ExceptionHandler</span>(<span class="type">Exception</span>.<span class="keyword">class</span>)
+    <span class="keyword">public</span> <span class="type">ResponseEntity</span>&lt;<span class="type">ErrorResponse</span>&gt; <span class="function">handleGeneralException</span>(<span class="type">Exception</span> ex) {
+        <span class="type">ErrorResponse</span> error = <span class="keyword">new</span> <span class="type">ErrorResponse</span>(
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            <span class="string">"Something went wrong: "</span> + ex.<span class="function">getMessage</span>()
+        );
+        <span class="keyword">return new</span> <span class="type">ResponseEntity</span>&lt;&gt;(error, HttpStatus.INTERNAL_SERVER_ERROR);  <span class="comment">// 500</span>
+    }
+}</code></pre>
+            </div>
+
+            <div class="remember">
+                <div class="remember-title">🧠 Exception Handler Ka Magic</div>
+                <p>
+                    <code>@RestControllerAdvice</code> lagane se ye class <strong>global</strong> exception handler ban jata hai. 
+                    Ab kisi bhi controller mein error aaye toh automatically ye pakad lega aur accha JSON response dega. 
+                    Har controller mein alag se <code>try-catch</code> likhne ki zaroorat nahi!
+                </p>
+            </div>
+        </section>
+
+        <section class="section" id="project-step7">
+            <h2>Step 7: Run & Test Karna 🚀</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <h4>Application Run Karna</h4>
+                <p>Terminal mein ye command chalao:</p>
+                <pre><code><span class="comment"># Mac/Linux</span>
+./mvnw spring-boot:run
+
+<span class="comment"># Windows</span>
+mvnw.cmd spring-boot:run
+
+<span class="comment"># Ya IDE se: StudentapiApplication.java ke main() ke bagal ka play button click karo</span></code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <h4>Final Project Structure Check</h4>
+                <div class="tree">
+<span class="folder">studentapi/</span>
+├── <span class="folder">src/main/java/com/bitsandbytes/studentapi/</span>
+│   ├── <span class="file">StudentapiApplication.java</span>       <span class="comment">-- Main class (@SpringBootApplication)</span>
+│   ├── <span class="folder">controller/</span>
+│   │   └── <span class="file">StudentController.java</span>       <span class="comment">-- REST API endpoints (@RestController)</span>
+│   ├── <span class="folder">service/</span>
+│   │   └── <span class="file">StudentService.java</span>          <span class="comment">-- Business logic (@Service)</span>
+│   ├── <span class="folder">repository/</span>
+│   │   └── <span class="file">StudentRepository.java</span>       <span class="comment">-- Database access (@Repository)</span>
+│   ├── <span class="folder">model/</span>
+│   │   └── <span class="file">Student.java</span>                 <span class="comment">-- Entity class (@Entity)</span>
+│   └── <span class="folder">exception/</span>
+│       ├── <span class="file">ErrorResponse.java</span>           <span class="comment">-- Error response format</span>
+│       └── <span class="file">GlobalExceptionHandler.java</span>  <span class="comment">-- Global exceptions (@RestControllerAdvice)</span>
+├── <span class="folder">src/main/resources/</span>
+│   └── <span class="file">application.properties</span>           <span class="comment">-- Configuration</span>
+└── <span class="file">pom.xml</span>                                  <span class="comment">-- Maven dependencies</span></div>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <h4>Postman se Test Karna</h4>
+                <p>Postman download kar: <a href="https://www.postman.com/downloads/" style="color: var(--primary);">https://www.postman.com/downloads/</a></p>
+                
+                <table>
+                    <tr><th>API</th><th>Method</th><th>URL</th><th>Body</th></tr>
+                    <tr><td>Create</td><td>POST</td><td><code>http://localhost:8080/api/students</code></td><td>JSON body</td></tr>
+                    <tr><td>Read All</td><td>GET</td><td><code>http://localhost:8080/api/students</code></td><td>None</td></tr>
+                    <tr><td>Read One</td><td>GET</td><td><code>http://localhost:8080/api/students/1</code></td><td>None</td></tr>
+                    <tr><td>Update</td><td>PUT</td><td><code>http://localhost:8080/api/students/1</code></td><td>JSON body</td></tr>
+                    <tr><td>Delete</td><td>DELETE</td><td><code>http://localhost:8080/api/students/1</code></td><td>None</td></tr>
+                    <tr><td>Search</td><td>GET</td><td><code>http://localhost:8080/api/students/search?name=Rahul</code></td><td>None</td></tr>
+                </table>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <h4>POST Request Example (Create Student)</h4>
+                <pre><code><span class="comment">// URL: POST http://localhost:8080/api/students</span>
+<span class="comment">// Headers: Content-Type: application/json</span>
+<span class="comment">// Body (raw JSON):</span>
+
+{
+    <span class="string">"name"</span>: <span class="string">"Rahul Sharma"</span>,
+    <span class="string">"age"</span>: <span class="number">20</span>,
+    <span class="string">"email"</span>: <span class="string">"rahul@student.com"</span>
+}
+
+<span class="comment">// Response (201 Created):</span>
+{
+    <span class="string">"id"</span>: <span class="number">1</span>,
+    <span class="string">"name"</span>: <span class="string">"Rahul Sharma"</span>,
+    <span class="string">"age"</span>: <span class="number">20</span>,
+    <span class="string">"email"</span>: <span class="string">"rahul@student.com"</span>
+}</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">5</span>
+                <h4>GET All Students</h4>
+                <pre><code><span class="comment">// URL: GET http://localhost:8080/api/students</span>
+
+<span class="comment">// Response (200 OK):</span>
+[
+    {
+        <span class="string">"id"</span>: <span class="number">1</span>,
+        <span class="string">"name"</span>: <span class="string">"Rahul Sharma"</span>,
+        <span class="string">"age"</span>: <span class="number">20</span>,
+        <span class="string">"email"</span>: <span class="string">"rahul@student.com"</span>
+    }
+]</code></pre>
+            </div>
+
+            <div class="step">
+                <span class="step-number">6</span>
+                <h4>H2 Database Console</h4>
+                <p>Browser mein ja: <code>http://localhost:8080/h2-console</code></p>
+                <p>JDBC URL: <code>jdbc:h2:mem:studentdb</code></p>
+                <p>Username: <code>sa</code></p>
+                <p>Password: <code>(empty)</code></p>
+                <p>Connect pe click kar - database ki tables dekh sakta hai!</p>
+            </div>
+        </section>
+
+        <!-- Additional Sections -->
+        <section class="section" id="devtools">
+            <h2>Spring Boot DevTools 🔄</h2>
+            <p>
+                DevTools ek magic tool hai jo <strong>auto-restart</strong> karta hai. Tu code change karega aur 
+                save karega - application automatically restart ho jayegi!
+            </p>
+
+            <div class="file-label">pom.xml mein ye dependency hoti hai (already added)</div>
+            <pre><code>&lt;<span class="keyword">dependency</span>&gt;
+    &lt;<span class="keyword">groupId</span>&gt;org.springframework.boot&lt;/<span class="keyword">groupId</span>&gt;
+    &lt;<span class="keyword">artifactId</span>&gt;spring-boot-devtools&lt;/<span class="keyword">artifactId</span>&gt;
+    &lt;<span class="keyword">scope</span>&gt;runtime&lt;/<span class="keyword">scope</span>&gt;
+    &lt;<span class="keyword">optional</span>&gt;true&lt;/<span class="keyword">optional</span>&gt;
+&lt;/<span class="keyword">dependency</span>&gt;</code></pre>
+
+            <div class="tip">
+                <div class="tip-title">💡 DevTools Ke Fayde</div>
+                <ul>
+                    <li>Code change + save = <strong>Automatic restart</strong></li>
+                    <li>Cache <strong>disable</strong> hota hai development mein</li>
+                    <li>Auto browser refresh (web apps ke liye)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="postman">
+            <h2>Postman se API Testing 📮</h2>
+            <p>
+                Postman ek tool hai jisse REST APIs test kar sakte hain bina frontend banaye. 
+                Ye developers ka sabse favorite tool hai API testing ke liye.
+            </p>
+
+            <h3>Postman Mein Request Kaise Bheje</h3>
+            <ol>
+                <li>Postman open karo</li>
+                <li>New Request pe click karo</li>
+                <li>Method select karo (GET/POST/PUT/DELETE)</li>
+                <li>URL daalo (jaise <code>http://localhost:8080/api/students</code>)</li>
+                <li>POST/PUT ke liye "Body" tab → "raw" → "JSON" select karo</li>
+                <li>JSON data likho</li>
+                <li>"Send" button pe click karo!</li>
+            </ol>
+
+            <div class="file-label">Postman Collection (Import kar sakta hai)</div>
+            <pre><code>{
+    <span class="string">"info"</span>: {
+        <span class="string">"name"</span>: <span class="string">"Student API"</span>,
+        <span class="string">"description"</span>: <span class="string">"Student Management System APIs"</span>
+    },
+    <span class="string">"item"</span>: [
+        {
+            <span class="string">"name"</span>: <span class="string">"Create Student"</span>,
+            <span class="string">"request"</span>: {
+                <span class="string">"method"</span>: <span class="string">"POST"</span>,
+                <span class="string">"header"</span>: [{ <span class="string">"key"</span>: <span class="string">"Content-Type"</span>, <span class="string">"value"</span>: <span class="string">"application/json"</span> }],
+                <span class="string">"url"</span>: <span class="string">"http://localhost:8080/api/students"</span>,
+                <span class="string">"body"</span>: {
+                    <span class="string">"mode"</span>: <span class="string">"raw"</span>,
+                    <span class="string">"raw"</span>: <span class="string">"{\"name\":\"Rahul\",\"age\":20,\"email\":\"rahul@test.com\"}"</span>
+                }
+            }
+        },
+        {
+            <span class="string">"name"</span>: <span class="string">"Get All Students"</span>,
+            <span class="string">"request"</span>: {
+                <span class="string">"method"</span>: <span class="string">"GET"</span>,
+                <span class="string">"url"</span>: <span class="string">"http://localhost:8080/api/students"</span>
+            }
+        }
+    ]
+}</code></pre>
+        </section>
+
+        <section class="section" id="common-errors">
+            <h2>Common Errors & Solutions 🔧</h2>
+            
+            <table>
+                <tr><th>Error</th><th>Reason</th><th>Solution</th></tr>
+                <tr>
+                    <td><code>Port 8080 already in use</code></td>
+                    <td>Koi aur app 8080 use kar rahi hai</td>
+                    <td><code>server.port=8081</code> application.properties mein daalo</td>
+                </tr>
+                <tr>
+                    <td><code>Failed to start bean 'webServerStartStop'</code></td>
+                    <td>Port conflict ya dependency issue</td>
+                    <td>Port change karo ya <code>mvn clean install</code> karo</td>
+                </tr>
+                <tr>
+                    <td><code>Could not find class</code></td>
+                    <td>Package structure galat hai</td>
+                    <td>Main class sabse upar honi chahiye, baaki sub-packages mein</td>
+                </tr>
+                <tr>
+                    <td><code>Field repository is null</code></td>
+                    <td>@Autowired nahi lagaya ya @Repository nahi lagaya</td>
+                    <td>Annotations check karo - @Repository, @Service, @RestController</td>
+                </tr>
+                <tr>
+                    <td><code>Table not found</code></td>
+                    <td>Entity class mein @Entity nahi lagaya</td>
+                    <td>@Entity annotation add karo, ddl-auto=update check karo</td>
+                </tr>
+                <tr>
+                    <td><code>404 Not Found</code></td>
+                    <td>URL galat hai ya controller scan nahi ho raha</td>
+                    <td>URL check karo, controller main class ke sub-package mein hona chahiye</td>
+                </tr>
+                <tr>
+                    <td><code>415 Unsupported Media Type</code></td>
+                    <td>Content-Type header nahi bheja</td>
+                    <td>Header mein <code>Content-Type: application/json</code> add karo</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section" id="cheatsheet">
+            <h2>Annotation Cheat Sheet 📋</h2>
+            
+            <table>
+                <tr><th>Annotation</th><th>Kahan Lagate Hain?</th><th>Kaam</th></tr>
+                <tr><td><code>@SpringBootApplication</code></td><td>Main class</td><td>App start karne ke liye</td></tr>
+                <tr><td><code>@RestController</code></td><td>Controller class</td><td>REST API requests handle karna</td></tr>
+                <tr><td><code>@RequestMapping("/path")</code></td><td>Class/Method</td><td>URL path set karna</td></tr>
+                <tr><td><code>@GetMapping("/path")</code></td><td>Method</td><td>GET request handle karna</td></tr>
+                <tr><td><code>@PostMapping("/path")</code></td><td>Method</td><td>POST request handle karna</td></tr>
+                <tr><td><code>@PutMapping("/path")</code></td><td>Method</td><td>PUT request handle karna</td></tr>
+                <tr><td><code>@DeleteMapping("/path")</code></td><td>Method</td><td>DELETE request handle karna</td></tr>
+                <tr><td><code>@PathVariable</code></td><td>Method parameter</td><td>URL path se value nikalna</td></tr>
+                <tr><td><code>@RequestParam</code></td><td>Method parameter</td><td>URL query se value nikalna</td></tr>
+                <tr><td><code>@RequestBody</code></td><td>Method parameter</td><td>JSON → Object convert karna</td></tr>
+                <tr><td><code>@Autowired</code></td><td>Field/Constructor</td><td>Dependency inject karna</td></tr>
+                <tr><td><code>@Service</code></td><td>Class</td><td>Business logic layer</td></tr>
+                <tr><td><code>@Repository</code></td><td>Interface</td><td>Database access layer</td></tr>
+                <tr><td><code>@Component</code></td><td>Class</td><td>Generic Spring bean</td></tr>
+                <tr><td><code>@Entity</code></td><td>Class</td><td>Database table mark karna</td></tr>
+                <tr><td><code>@Table(name="xyz")</code></td><td>Entity class</td><td>Table naam set karna</td></tr>
+                <tr><td><code>@Id</code></td><td>Field</td><td>Primary key</td></tr>
+                <tr><td><code>@GeneratedValue</code></td><td>Id field</td><td>Auto-generate ID</td></tr>
+                <tr><td><code>@Column</code></td><td>Field</td><td>Column properties</td></tr>
+                <tr><td><code>@ExceptionHandler</code></td><td>Method</td><td>Exception handle karna</td></tr>
+                <tr><td><code>@RestControllerAdvice</code></td><td>Class</td><td>Global exception handling</td></tr>
+            </table>
+        </section>
+
+        <!-- Final Summary -->
+        <section class="section" style="background: var(--secondary); color: white;">
+            <h2 style="color: var(--primary); border-color: var(--primary);">Summary 🎯</h2>
+            <p style="color: #ccc;">
+                Bhai, ab tu Spring Boot + REST API mein confident hona chahiye! Here's a quick recap:
+            </p>
+            <ul style="color: #ccc;">
+                <li>Spring Boot auto-configuration se fast development hoti hai</li>
+                <li>Annotations se framework ko instructions dete hain</li>
+                <li>Layered architecture (Controller → Service → Repository) use karte hain</li>
+                <li>JPA se SQL likhne ki zaroorat nahi - method names se kaam hota hai</li>
+                <li>REST API mein HTTP methods (GET, POST, PUT, DELETE) CRUD operations handle karte hain</li>
+            </ul>
+            <p style="color: #ccc; margin-top: 20px;">
+                Ab tu koi bhi project bana sakta hai - bas ye template follow kar:
+            </p>
+            <ol style="color: #ccc;">
+                <li>Entity class banao (@Entity)</li>
+                <li>Repository interface banao (@Repository extends JpaRepository)</li>
+                <li>Service class banao (@Service)</li>
+                <li>Controller class banao (@RestController)</li>
+                <li>Run karo aur Postman se test karo!</li>
+            </ol>
+            <p style="color: var(--primary); margin-top: 20px; font-size: 1.1rem;">
+                <strong>Happy Coding Bhai! 🚀</strong>
+            </p>
+        </section>
+    </div>
+
+    <button class="top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script>
+        // Show/hide scroll to top button
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.top-btn');
+            if (window.scrollY > 300) {
+                btn.style.display = 'block';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
